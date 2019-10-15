@@ -12,8 +12,9 @@ struct Complex {
 	~Complex() = default;
 
 	Complex& operator=(const Complex&) = default;
-	bool operator==(const Complex& rhs) const { return (re == rhs.re) && (im == rhs.im); }
-	bool operator!=(const Complex& rhs) const { return !operator==(rhs); }
+	Complex& operator=(const double rhs);
+	bool operator==(const Complex& rhs) const;
+	bool operator!=(const Complex& rhs) const;
 	Complex& operator+=(const Complex& rhs);
 	Complex& operator+=(const double rhs) { return operator+=(Complex(rhs)); }
 	Complex& operator-=(const Complex& rhs);
@@ -33,6 +34,8 @@ struct Complex {
 	static const char separator{ ',' };
 	static const char rightBrace{ ')' };
 };
+
+Complex conj(const Complex& rhs);
 
 Complex operator+(const Complex& lhs, const Complex& rhs);
 Complex operator+(const Complex& lhs, const double rhs);
