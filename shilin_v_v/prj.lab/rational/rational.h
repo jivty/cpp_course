@@ -24,7 +24,7 @@ public:
   Rational& operator/=(const int rhs) { return operator/=(Rational(rhs)); }
   std::ostream& writeTo(std::ostream& ostrm) const;
   std::istream& readFrom(std::istream& istrm);
-  static const char Vinculum{ '/' };
+  static const char vinculum{ '/' };
 private:
   int num { 0 };
   int den { 1 };
