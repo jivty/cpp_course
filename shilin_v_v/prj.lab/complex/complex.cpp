@@ -107,7 +107,7 @@ Complex& Complex::operator/=(const Complex& rhs) {
 }
 
 Complex& Complex::operator/=(const double rhs) {
-  if (rhs < 1e-7) {
+  if (rhs < std::numeric_limits<double>::epsilon()) {
     throw std::invalid_argument("Divison by zero");
   } else {
     re /= rhs;
