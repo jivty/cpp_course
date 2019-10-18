@@ -144,7 +144,7 @@ std::istream& Complex::readFrom(std::istream& istrm) {
   double real = 0.0;
   char comma = '0';
   double imaginary = 0.0;
-  char rightBrace = 0;
+  char rightBrace = '0';
   istrm >> leftBrace >> real >> comma >> imaginary >> rightBrace;
   if (istrm.good()) {
     if ((Complex::leftBrace == leftBrace) && (Complex::separator == comma) &&
