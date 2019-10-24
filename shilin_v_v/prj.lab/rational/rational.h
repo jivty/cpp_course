@@ -51,7 +51,7 @@ private:
     return rhs.writeTo(ostrm);
   }
 
-  inline std::istream& operator>>(std::istream istrm, Rational& rhs) {
+  inline std::istream& operator>>(std::istream& istrm, Rational& rhs) {
     return rhs.readFrom(istrm);
   }
 

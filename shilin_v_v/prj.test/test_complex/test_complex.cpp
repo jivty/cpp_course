@@ -1,7 +1,6 @@
 #include "complex.h"
 #include <iostream>
 #include <sstream>
-#include <string>
 
 bool testParse(const std::string& str) {
   std::istringstream istrm(str);
@@ -23,10 +22,15 @@ int main() {
   z = Complex(3, -8);
   std::cout << "z = {3,-8} : z -> " << z << std::endl;
   std::cout << std::endl;
-  b = Complex(3, -8);
+  b = Complex(z);
+  std::cout << "b = Complex(z) : b -> " << b << std::endl;
   std::cout << z << " == " << b << " ? -> " <<
     (z == b ? "yes" : "no") << std::endl;
+  std::cout << z << " != " << b << " ? -> " <<
+    (z != b ? "yes" : "no") << std::endl;
   b = Complex(1, 2);
+  std::cout << z << " == " << b << " ? -> " <<
+    (z == b ? "yes" : "no") << std::endl;
   std::cout << z << " != " << b << " ? -> " <<
     (z != b ? "yes" : "no") << std::endl;
   std::cout << std::endl;

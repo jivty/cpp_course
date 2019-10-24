@@ -2,7 +2,11 @@
 #include <iostream>
 
 Rational& Rational::reduction() {
-  int tmpNum = num;
+  if (den < 0) {
+    den *= -1;
+    num *= -1;
+  }
+  int tmpNum = abs(num);
   int tmpDen = den;
   while ((tmpNum != 0) && (tmpDen != 0))
     tmpNum > tmpDen ? tmpNum %= tmpDen : tmpDen %= tmpNum;
@@ -14,7 +18,9 @@ Rational& Rational::reduction() {
 Rational::Rational(const int numerator, const int denuminator)
   : num(numerator)
   , den(denuminator) {
-  reduction();
+  if (den == 0) throw std::invalid_argument("Divison by zero");
+  else
+    reduction();
 }
 
 Rational::Rational(const int numerator)
