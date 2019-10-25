@@ -5,12 +5,16 @@
 bool testParse(const std::string& str) {
   std::istringstream istrm(str);
   Rational z;
-  istrm >> z;
-  if (istrm.good()) {
-    std::cout << "Read succes: " << str << " -> " << z << std::endl;
-  } else {
-    std::cout << "Read error: " << str << " -> " << z << std::endl;
-  }
+  try {
+    istrm >> z;
+    if (istrm.good()) {
+      std::cout << "Read succes: " << str << " -> " << z << std::endl;
+    } else {
+      std::cout << "Read error: " << str << " -> " << z << std::endl;
+    }
+  } catch (std::invalid_argument){
+    std::cout << "Read error: " << str << " -> " << "Division by zero is catched";
+  } 
   return istrm.good();
 }
 
@@ -95,9 +99,8 @@ int main() {
     std::cout << "Division by zero is catched" << std::endl;
   }
   std::cout << std::endl;
-  testParse("1/2");
-  testParse("89/234");
-  testParse("0/7");
-  testParse("8\2");
+  testParse("1/-4");
+  testParse("-89/-178");
+  testParse("0 / -7");
   testParse("100/0");
 }

@@ -18,9 +18,11 @@ Rational& Rational::reduction() {
 Rational::Rational(const int numerator, const int denuminator)
   : num(numerator)
   , den(denuminator) {
-  if (den == 0) throw std::invalid_argument("Divison by zero");
-  else
+  if (den == 0) {
+    throw std::invalid_argument("Divison by zero");
+  } else {
     reduction();
+  }
 }
 
 Rational::Rational(const int numerator)
@@ -138,12 +140,18 @@ std::istream& Rational::readFrom(std::istream& istrm) {
   char viniculum('0');
   int denuminator(0);
   istrm >> numerator >> viniculum >> denuminator;
-  if (istrm.good()) {
-    if (Rational::vinculum == viniculum) {
-      num = numerator;
-      den = denuminator;
-    } else {
-      istrm.setstate(std::ios_base::failbit);
+  if (denuminator == 0) {
+    throw std::invalid_argument("Division by zero");
+  } else {
+    if (istrm.good() || istrm.eof()) {
+      if (Rational::vinculum == viniculum) {
+        num = numerator;
+        den = denuminator;
+        reduction();
+      }
+      else {
+        istrm.setstate(std::ios_base::failbit);
+      }
     }
   }
   return istrm;
