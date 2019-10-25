@@ -125,7 +125,7 @@ Rational operator/(const Rational& lhs, const int rhs) {
   return lhs / Rational(rhs);
 }
 
-Rational operator/(const int lhs, const Rational rhs) {
+Rational operator/(const int lhs, const Rational& rhs) {
   return Rational(lhs) / rhs;
 }
 
