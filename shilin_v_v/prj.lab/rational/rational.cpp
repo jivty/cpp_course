@@ -29,7 +29,7 @@ Rational::Rational(const int numerator)
 
 Rational& Rational::operator=(const int rhs) {
   num = rhs;
-  den = 1; 
+  den = 1;
   return *this;
 }
 

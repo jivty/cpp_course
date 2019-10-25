@@ -4,7 +4,7 @@
 #include <iosfwd>
 
 class Rational {
-public:
+ public:
   Rational() {}
   Rational(const Rational&) = default;
   explicit Rational(const int numerator);
@@ -12,6 +12,7 @@ public:
   ~Rational() = default;
   Rational& operator=(const Rational&) = default;
   Rational& operator=(const int rhs);
+
   bool operator==(const Rational& rhs) const;
   bool operator!=(const Rational& rhs) const;
   Rational& operator+=(const Rational& rhs);
@@ -22,10 +23,15 @@ public:
   Rational& operator*=(const int rhs) { return operator*=(Rational(rhs)); }
   Rational& operator/=(const Rational& rhs);
   Rational& operator/=(const int rhs) { return operator/=(Rational(rhs)); }
+  
   std::ostream& writeTo(std::ostream& ostrm) const;
   std::istream& readFrom(std::istream& istrm);
+  
   static const char vinculum{ '/' };
-private:
+  int Num(const Rational& rhs) { return num; }
+  int Den(const Rational& rhs) { return den; }
+
+ private:
   int num { 0 };
   int den { 1 };
   Rational& reduction();
