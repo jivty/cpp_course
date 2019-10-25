@@ -134,9 +134,9 @@ std::ostream& Rational::writeTo(std::ostream& ostrm) const {
   return ostrm;
 }
 std::istream& Rational::readFrom(std::istream& istrm) {
-  int numerator = 0;
-  char viniculum = '0';
-  int denuminator = 0;
+  int numerator(0);
+  char viniculum('0');
+  int denuminator(0);
   istrm >> numerator >> viniculum >> denuminator;
   if (istrm.good()) {
     if (Rational::vinculum == viniculum) {

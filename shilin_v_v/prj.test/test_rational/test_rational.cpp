@@ -7,9 +7,9 @@ bool testParse(const std::string& str) {
   Rational z;
   istrm >> z;
   if (istrm.good()) {
-    std::cout << "Read succes:" << str << " -> " << z << std::endl;
+    std::cout << "Read succes: " << str << " -> " << z << std::endl;
   } else {
-    std::cout << "Read error:" << str << " -> " << z << std::endl;
+    std::cout << "Read error: " << str << " -> " << z << std::endl;
   }
   return istrm.good();
 }
