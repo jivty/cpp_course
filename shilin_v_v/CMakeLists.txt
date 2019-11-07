@@ -24,6 +24,7 @@ set(CMAKE_MODULE_PATH
 
 project(shilin_v_v)
 
+include(cmake/build_prefix.cmake)
 include_directories(prj.lab prj.thirdparty)
 
 add_subdirectory(prj.lab)
