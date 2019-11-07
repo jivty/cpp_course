@@ -34,7 +34,7 @@ struct Complex {
   static const char rightBrace { '}' };
 };
 
-Complex conj(const Complex& rhs);
+Complex operator-(const Complex& lhs);
 
 Complex operator+(const Complex& lhs, const Complex& rhs);
 Complex operator+(const Complex& lhs, const double rhs);

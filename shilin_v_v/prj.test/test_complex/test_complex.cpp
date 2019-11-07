@@ -21,6 +21,7 @@ int main() {
   std::cout << "z = 3.1 : z -> " << z << std::endl;
   z = Complex(3, -8);
   std::cout << "z = {3,-8} : z -> " << z << std::endl;
+  std::cout << " -z : z -> " << -z << std::endl;
   std::cout << std::endl;
   b = Complex(z);
   std::cout << "b = Complex(z) : b -> " << b << std::endl;
@@ -66,10 +67,6 @@ int main() {
   std::cout << z;
   z /= 2.5;
   std::cout << " /= 2.5 -> " << z << std::endl;
-  z = Complex(8, 8);
-  std::cout << z << " -> conj" << z;
-  z = conj(z);
-  std::cout << " = " << z << std::endl;
   std::cout << std::endl;
   z = Complex(3, -2); b = Complex(-8, 4);
   std::cout << z << " + " << b << " = " << z + b << std::endl;

@@ -18,17 +18,16 @@ Complex& Complex::operator=(const double rhs) {
 }
 
 bool Complex::operator==(const Complex& rhs) const {
-  return ((fabs(re - rhs.re) < std::numeric_limits<double>::epsilon()) &&
-    (fabs(im - rhs.im) < std::numeric_limits<double>::epsilon()));
+  return ((fabs(re - rhs.re) <= std::numeric_limits<double>::epsilon()) &&
+    (fabs(im - rhs.im) <= std::numeric_limits<double>::epsilon()));
 }
+
 bool Complex::operator!=(const Complex& rhs) const {
   return !operator==(rhs);
 }
 
-Complex conj(const Complex& rhs) {
-  Complex conj_(rhs);
-  conj_.im *= (-1);
-  return conj_;
+Complex operator-(const Complex& lhs) {
+  return { -lhs.re, -lhs.im };
 }
 
 Complex& Complex::operator+=(const Complex& rhs) {
@@ -60,7 +59,7 @@ Complex operator-(const Complex& lhs, const Complex& rhs) {
 }
 
 Complex operator-(const Complex& lhs, const double rhs) {
-  return Complex(lhs.re - rhs, -lhs.im);
+  return Complex(lhs.re - rhs, lhs.im);
 }
 
 Complex operator-(const double lhs, const Complex& rhs) {
