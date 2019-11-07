@@ -25,6 +25,7 @@ int main() {
   std::cout << "z = 4 : z -> " << z << std::endl;
   z = Rational(-4, -2);
   std::cout << "z = (-4)/(-2) : z -> " << z << std::endl;
+  std::cout << "-z : -> " << -z << std::endl;
   b = Rational(z);
   std::cout << "b = Rational(z) : b -> " << b << std::endl;
   std::cout << std::endl;

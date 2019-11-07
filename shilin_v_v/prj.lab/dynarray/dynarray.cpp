@@ -81,10 +81,10 @@ void DynArray::resize(const ptrdiff_t nsize) {
       for (ptrdiff_t i = 0; i < size_; ++i) {
         tmpdata[i] = data_[i];
       }
-      delete[] data_;
-      data_ = tmpdata;
       size_ = nsize;
       capacity_ = nsize;
+      delete[] data_;
+      data_ = tmpdata;
     }
   }
 }

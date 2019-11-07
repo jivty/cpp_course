@@ -50,6 +50,10 @@ Rational& Rational::operator+=(const Rational& rhs) {
   return *this;
 }
 
+Rational operator-(const Rational& lhs) {
+  return 0 - lhs;
+}
+
 Rational operator+(const Rational& lhs, const Rational& rhs) {
   Rational sum(lhs);
   sum += rhs;
