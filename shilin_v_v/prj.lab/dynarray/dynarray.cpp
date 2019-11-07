@@ -43,6 +43,7 @@ DynArray& DynArray::operator=(const DynArray& rhs) {
 
 DynArray::~DynArray() {
   delete[] data_;
+  data_ = nullptr;
   size_ = 0;
   capacity_ = 0;
 }
@@ -67,4 +68,23 @@ const float& DynArray::operator[] (const ptrdiff_t index) const {
     throw std::out_of_range("index is out of range");
   }
   return data_[index];
+}
+
+void DynArray::resize(const ptrdiff_t nsize) {
+  if (nsize < 0) {
+    throw std::invalid_argument("new size is < 0");
+  } else {
+    if (nsize <= capacity_) {
+      size_ = nsize;
+    } else {
+      float* tmpdata = new float[nsize];
+      for (ptrdiff_t i = 0; i < size_; ++i) {
+        tmpdata[i] = data_[i];
+      }
+      delete[] data_;
+      data_ = tmpdata;
+      size_ = nsize;
+      capacity_ = nsize;
+    }
+  }
 }

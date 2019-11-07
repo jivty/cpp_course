@@ -1,7 +1,7 @@
 #ifndef DYNARRAY_DYNARRAY_H_112019
 #define DYNARRAY_DYNARRAY_H_112019
 
-#include <iosfwd>
+#include <cstddef>
 
 class DynArray {
 public:
@@ -15,9 +15,7 @@ public:
   ptrdiff_t capacity() const;
   float& operator[] (const ptrdiff_t index);
   const float& operator[] (const ptrdiff_t index) const;
-
-  //std::istream& readFrom(std::istream& istrtm);
-  //std::ostream& writeTo(std::ostream& ostrm) const;
+  void resize(const ptrdiff_t nsize);
 
 private:
   ptrdiff_t size_ { 0 };
