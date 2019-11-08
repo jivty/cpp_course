@@ -7,19 +7,19 @@ class DynArray {
 public:
   DynArray() = default;
   DynArray(const DynArray& arr);
-  DynArray(const ptrdiff_t size);
+  DynArray(const std::ptrdiff_t size);
   DynArray& operator=(const DynArray& rhs);
   ~DynArray();
 
-  ptrdiff_t size() const;
-  ptrdiff_t capacity() const;
-  float& operator[] (const ptrdiff_t index);
-  const float& operator[] (const ptrdiff_t index) const;
-  void resize(const ptrdiff_t nsize);
+  std::ptrdiff_t size() const;
+  std::ptrdiff_t capacity() const;
+  float& operator[] (const std::ptrdiff_t index);
+  const float& operator[] (const std::ptrdiff_t index) const;
+  void resize(const std::ptrdiff_t nsize);
 
 private:
-  ptrdiff_t size_ { 0 };
-  ptrdiff_t capacity_ { 0 };
+  std::ptrdiff_t size_ { 0 };
+  std::ptrdiff_t capacity_ { 0 };
   float* data_ { nullptr };
 };
 
