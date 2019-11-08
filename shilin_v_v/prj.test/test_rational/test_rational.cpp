@@ -7,7 +7,7 @@ bool testParse(const std::string& str) {
   Rational z;
   try {
     istrm >> z;
-    if (istrm.good()) {
+    if (!istrm.fail()) {
       std::cout << "Read succes: " << str << " -> " << z << std::endl;
     } else {
       std::cout << "Read error: " << str << " -> " << z << std::endl;
@@ -100,8 +100,8 @@ int main() {
     std::cout << "Division by zero is catched" << std::endl;
   }
   std::cout << std::endl;
-  testParse("1/-4");
+  testParse("1/4");
   testParse("-89/-178");
-  testParse("0 / -7");
+  testParse("0 / 7");
   testParse("100/0");
 }

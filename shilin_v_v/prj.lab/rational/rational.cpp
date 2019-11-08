@@ -143,20 +143,23 @@ std::istream& Rational::readFrom(std::istream& istrm) {
   int numerator(0);
   char viniculum('0');
   int denuminator(0);
-  istrm >> numerator >> viniculum >> denuminator;
-  if (denuminator == 0) {
-    throw std::invalid_argument("Division by zero");
-  } else {
-    if (istrm.good() || istrm.eof()) {
-      if (Rational::vinculum == viniculum) {
+  istrm >> numerator;
+  if (istrm.peek() == '/') {
+    istrm >> viniculum;
+    if (istrm.peek() >= '0' && istrm.peek() <= '9') {
+      istrm >> denuminator;
+      if ((istrm.good() || istrm.eof()) &&  denuminator > 0) {
         num = numerator;
         den = denuminator;
         reduction();
-      }
-      else {
+      } else {
         istrm.setstate(std::ios_base::failbit);
       }
+    } else {
+      istrm.setstate(std::ios_base::failbit);
     }
+  } else {
+    istrm.setstate(std::ios_base::failbit);
   }
   return istrm;
 }
