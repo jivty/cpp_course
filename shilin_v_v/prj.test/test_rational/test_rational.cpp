@@ -12,9 +12,10 @@ bool testParse(const std::string& str) {
     } else {
       std::cout << "Read error: " << str << " -> " << z << std::endl;
     }
-  } catch (std::invalid_argument){
-    std::cout << "Read error: " << str << " -> " << "Division by zero is catched";
-  } 
+  } catch(std::invalid_argument) {
+    std::cout << "Read error: " << str
+      << " -> " << "Division by zero is catched";
+  }
   return istrm.good();
 }
 
@@ -84,19 +85,19 @@ int main() {
   std::cout << "z / 0 = ";
   try {
     std::cout << z / 0;
-  } catch (std::invalid_argument) {
+  } catch(std::invalid_argument) {
     std::cout << "Division by zero is catched" << std::endl;
   }
   std::cout << "z / 0/7 = ";
   try {
     std::cout << z / Rational(0, 7) << std::endl;
-  } catch (std::invalid_argument) {
+  } catch(std::invalid_argument) {
     std::cout << "Division by zero is catched" << std::endl;
   }
   std::cout << "7/0 = ";
   try {
-    std::cout << Rational(7,0);
-  } catch (std::invalid_argument) {
+    std::cout << Rational(7, 0);
+  } catch(std::invalid_argument) {
     std::cout << "Division by zero is catched" << std::endl;
   }
   std::cout << std::endl;

@@ -6,8 +6,8 @@ int main() {
   DynArray arr;
   std::cout << arr.size() << " " << arr.capacity();
   arr.resize(5);
-  for (int i = 0; i < 5; ++i) { 
-    arr[i] = i + 1; 
+  for (int i = 0; i < 5; ++i) {
+    arr[i] = i + 1;
   }
   std::cout << std::endl;
   DynArray arr2(7);

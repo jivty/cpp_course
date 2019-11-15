@@ -4,7 +4,7 @@
 #include <cstddef>
 
 class DynArray {
-public:
+ public:
   DynArray() = default;
   DynArray(const DynArray& arr);
   DynArray(const std::ptrdiff_t size);
@@ -17,7 +17,7 @@ public:
   const float& operator[] (const std::ptrdiff_t index) const;
   void resize(const std::ptrdiff_t nsize);
 
-private:
+ private:
   std::ptrdiff_t size_ { 0 };
   std::ptrdiff_t capacity_ { 0 };
   float* data_ { nullptr };

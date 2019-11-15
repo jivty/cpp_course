@@ -139,6 +139,7 @@ std::ostream& Rational::writeTo(std::ostream& ostrm) const {
   ostrm << num << vinculum << den;
   return ostrm;
 }
+
 std::istream& Rational::readFrom(std::istream& istrm) {
   int numerator(0);
   char viniculum('0');

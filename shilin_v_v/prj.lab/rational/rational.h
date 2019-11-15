@@ -23,11 +23,11 @@ class Rational {
   Rational& operator*=(const int rhs) { return operator*=(Rational(rhs)); }
   Rational& operator/=(const Rational& rhs);
   Rational& operator/=(const int rhs) { return operator/=(Rational(rhs)); }
-  
+ 
   std::ostream& writeTo(std::ostream& ostrm) const;
   std::istream& readFrom(std::istream& istrm);
-  
-  static const char vinculum{ '/' };
+
+  static const char vinculum { '/' };
   int Num(const Rational& rhs) { return num; }
   int Den(const Rational& rhs) { return den; }
 
