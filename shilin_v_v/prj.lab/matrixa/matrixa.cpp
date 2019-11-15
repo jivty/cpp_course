@@ -41,4 +41,14 @@ MatrixA& MatrixA::operator=(const MatrixA& rhs) {
   }
 }
 
+std::ptrdiff_t MatrixA::col_count() const {
+  return col_;
+}
 
+std::ptrdiff_t MatrixA::row_count() const {
+  return row_;
+}
+
+float& MatrixA::at(const std::ptrdiff_t row_i, const std::ptrdiff_t col_i) {
+
+}
