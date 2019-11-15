@@ -4,23 +4,24 @@
 #include <cstddef>
 
 class MatrixA {
-public:
+ public:
   MatrixA() = default;
-  MatrixA(const ptrdiff_t col, const ptrdiff_t row);
   MatrixA(const MatrixA& mtrx);
+  MatrixA(const ptrdiff_t col, const ptrdiff_t row);
   MatrixA& operator=(const MatrixA& rhs);
   ~MatrixA();
 
   std::ptrdiff_t capacity() const;
-  std::ptrdiff_t col() const;
-  std::ptrdiff_t row() const;
-  void resize(const std::ptrdiff_t ncol, const std::ptrdiff_t nrow);
+  std::ptrdiff_t col_count() const;
+  std::ptrdiff_t row_count() const;
+  float& at(const std::ptrdiff_t row_i, const std::ptrdiff_t col_i);
+  const float& at(const std::ptrdiff_t row_i, const std::ptrdiff_t col_i) const;
 
-private:
-  float* data_{ nullptr };
-  std::ptrdiff_t col_{ 0 };
-  std::ptrdiff_t row_{ 0 };
-  std::ptrdiff_t capacity_{ 0 };
+ private:
+  //std::unique_ptr<float[]> data_;
+  float* data_ = new float[];
+  std::ptrdiff_t col_ { 0 };
+  std::ptrdiff_t row_ { 0 };
 };
 
 #endif
