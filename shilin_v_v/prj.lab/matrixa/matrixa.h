@@ -2,6 +2,7 @@
 #define MATRIXA_MATRIXA_H_112019
 
 #include <cstddef>
+#include <memory>
 
 class MatrixA {
  public:

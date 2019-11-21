@@ -4,19 +4,22 @@
 MatrixA::MatrixA(const MatrixA& mtrx)
   : col_(mtrx.col_)
   , row_(mtrx.row_)
-  , data_(new float[mtrx.col_ * mtrx.row_]) {
+  , data_(std::make_unique<float[]>(mtrx.col_*mtrx.row_)) {
   for (ptrdiff_t i = 0; i < col_ * row_; ++i) {
     data_[i] = mtrx.data_[i];
   }
 }
 
 MatrixA::MatrixA(const ptrdiff_t col, const ptrdiff_t row) {
-  if (col < 0 || row < 0) {
+  if (col <= 0 || row <= 0) {
     throw std::invalid_argument("size < 0");
   } else {
     col_ = col;
     row_ = row;
-    data_ = new float[col * row];
+    data_ = std::make_unique<float[]>(col * row);
+    for (ptrdiff_t i = 0; i < col_ * row_; ++i) {
+      data_[i] = 0;
+    }
   }
 }
 
@@ -31,14 +34,14 @@ MatrixA& MatrixA::operator=(const MatrixA& rhs) {
     } else {
       col_ = rhs.col_;
       row_ = rhs.row_;
-      float* tmpdata = new float[col_ * row_];
+      std::unique_ptr<float[]> tmpdata(std::make_unique<float[]>(col_ * row_));
       for (ptrdiff_t i = 0; i < col_ * row_; ++i) {
         tmpdata[i] = rhs.data_[i];
       }
-      delete[] data_;
-      data_ = tmpdata;
+      data_ = move(tmpdata);
     }
   }
+  return *this;
 }
 
 std::ptrdiff_t MatrixA::col_count() const {
@@ -50,5 +53,15 @@ std::ptrdiff_t MatrixA::row_count() const {
 }
 
 float& MatrixA::at(const std::ptrdiff_t row_i, const std::ptrdiff_t col_i) {
+  if (row_i < 0 || row_i >= row_ || col_i < 0 || col_i >= col_) {
+    throw std::out_of_range("index out of range");
+  }
+  return data_[row_i * col_ + col_i];
+}
 
+const float& MatrixA::at(const std::ptrdiff_t row_i, const std::ptrdiff_t col_i) const {
+  if (row_i < 0 || row_i >= row_ || col_i < 0 || col_i >= col_) {
+    throw std::out_of_range("index out of range");
+  }
+  return data_[row_i * col_ + col_i];
 }
