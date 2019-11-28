@@ -8,18 +8,22 @@ public:
   OrtoRegt& operator=(OrtoRegt& rhs) = default;
   ~OrtoRegt() = default;
 
-  OrtoRegt& intersect(OrtoRegt lhs, OrtoRegt rhs);
+  OrtoRegt intersect(OrtoRegt& rhs);
+  bool contain(float tx, float ty);
   void move(float dx, float dy);
   float width();
   float high();
 
-  std::istream& readFrom(std::istream istrm);
-  std::ostream& writeTo(std::ostream ostrm) const;
+  std::istream& readFrom(std::istream& istrm);
+  std::ostream& writeTo(std::ostream& ostrm) const;
 private:
   float pt1x { 0 };
   float pt1y { 0 };
   float pt2x { 0 };
   float pt2y { 0 };
+  const char leftBrace{ '(' };
+  const char rightBrace{ ')' };
+  const char separator{ ',' };
 };
 
 OrtoRegt::OrtoRegt(float t1x, float t1y, float t2x, float t2y)
@@ -33,6 +37,25 @@ OrtoRegt::OrtoRegt(float t1x, float t1y, float t2x, float t2y)
   if (pt1y > pt2y) {
     std::swap(pt1y, pt2y);
   }
+}
+
+bool OrtoRegt::contain(float tx, float ty) {
+  return tx - pt1x >= std::numeric_limits<float>::epsilon()
+    && pt2x - tx >= std::numeric_limits<float>::epsilon()
+    && ty - pt1y >= std::numeric_limits<float>::epsilon()
+    && pt2y - ty >= std::numeric_limits<float>::epsilon();
+}
+
+OrtoRegt OrtoRegt::intersect(OrtoRegt& rhs) {
+  float inpt1x = pt1x > rhs.pt1x ? pt1x : rhs.pt1x;
+  float inpt1y = pt1y > rhs.pt1y ? pt1y : rhs.pt1y;
+  float inpt2x = pt2x < rhs.pt2x ? pt2x : rhs.pt2x;
+  float inpt2y = pt2y < rhs.pt2y ? pt2y : rhs.pt2y;
+  if (!this->contain(inpt1x, inpt1y) || !this->contain(inpt2x, inpt2y)
+    || !rhs.contain(inpt1x, inpt1y) || !rhs.contain(inpt2x, inpt2y)) {
+    throw std::exception("No intersection");
+  }
+  return { inpt1x, inpt1y, inpt2x, inpt2y };
 }
 
 float OrtoRegt::high() {
@@ -50,22 +73,28 @@ void OrtoRegt::move(float dx, float dy) {
   pt2y += dy;
 }
 
-inline std::istream& OrtoRegt::readFrom(std::istream istrm) {
-  
+inline std::istream& operator>>(std::istream& istrm, OrtoRegt& rhs) {
+  return rhs.readFrom(istrm);
 }
 
-inline std::ostream& OrtoRegt::writeTo(std::ostream ostrm) const {
-  ostrm << 
+inline std::ostream& operator<<(std::ostream& ostrm, OrtoRegt& rhs) {
+  return rhs.writeTo(ostrm);
+}
+
+std::istream& OrtoRegt::readFrom(std::istream& istrm) {
+}
+
+std::ostream& OrtoRegt::writeTo(std::ostream& ostrm) const {
+  ostrm << leftBrace << pt1x << separator << pt1y << rightBrace <<
+    separator << leftBrace << pt2x << separator << pt2y << rightBrace;
+  return ostrm;
 }
 
 int main() {
   OrtoRegt test;
-  Point t1(12, 9);
-  Point t2(0, 0);
-  Point t3(12, 0);
 
-  OrtoRegt test2(t1, t2);
-  OrtoRegt test3(t3, t1);
+  OrtoRegt test2(12, 0, 1, 2);
+  OrtoRegt test3(1, 1, 2, 2);
   OrtoRegt test4(test2);
   std::cout << test.high() << " " << test.width() << std::endl;
   std::cout << test2.high() << " " << test2.width() << std::endl;
