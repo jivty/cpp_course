@@ -2,6 +2,7 @@
 #define ORTOREGT_ORTOREGT_H_112019
 
 #include <iosfwd>
+#include <limits>
 
 class OrtoRegt {
 public:
