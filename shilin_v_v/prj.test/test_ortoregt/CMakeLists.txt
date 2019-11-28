@@ -1,0 +1,3 @@
+add_executable(test_ortoregt test_ortoregt.cpp)
+target_link_libraries(test_ortoregt ortoregt)
+set_property(TARGET test_ortoregt PROPERTY CXX_STANDARD 17)
