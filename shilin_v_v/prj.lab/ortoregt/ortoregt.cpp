@@ -1,30 +1,5 @@
+#include "ortoregt.h"
 #include <iostream>
-
-class OrtoRegt {
-public:
-  OrtoRegt() = default;
-  OrtoRegt(float t1x, float t1y, float t2x, float t2y);
-  OrtoRegt(OrtoRegt& obj) = default;
-  OrtoRegt& operator=(OrtoRegt& rhs) = default;
-  ~OrtoRegt() = default;
-
-  OrtoRegt intersect(OrtoRegt& rhs);
-  bool contain(float tx, float ty);
-  void move(float dx, float dy);
-  float width();
-  float high();
-
-  std::istream& readFrom(std::istream& istrm);
-  std::ostream& writeTo(std::ostream& ostrm) const;
-private:
-  float pt1x { 0 };
-  float pt1y { 0 };
-  float pt2x { 0 };
-  float pt2y { 0 };
-  const char leftBrace{ '(' };
-  const char rightBrace{ ')' };
-  const char separator{ ',' };
-};
 
 OrtoRegt::OrtoRegt(float t1x, float t1y, float t2x, float t2y)
   : pt1x(t1x)
@@ -40,10 +15,8 @@ OrtoRegt::OrtoRegt(float t1x, float t1y, float t2x, float t2y)
 }
 
 bool OrtoRegt::contain(float tx, float ty) {
-  return tx - pt1x >= std::numeric_limits<float>::epsilon()
-    && pt2x - tx >= std::numeric_limits<float>::epsilon()
-    && ty - pt1y >= std::numeric_limits<float>::epsilon()
-    && pt2y - ty >= std::numeric_limits<float>::epsilon();
+  return pt1x <= tx && tx <= pt2x
+    && pt1y <= ty && ty <= pt2y;
 }
 
 OrtoRegt OrtoRegt::intersect(OrtoRegt& rhs) {
@@ -81,25 +54,10 @@ inline std::ostream& operator<<(std::ostream& ostrm, OrtoRegt& rhs) {
   return rhs.writeTo(ostrm);
 }
 
-std::istream& OrtoRegt::readFrom(std::istream& istrm) {
-}
+//std::istream& OrtoRegt::readFrom(std::istream& istrm) {}
 
 std::ostream& OrtoRegt::writeTo(std::ostream& ostrm) const {
   ostrm << leftBrace << pt1x << separator << pt1y << rightBrace <<
     separator << leftBrace << pt2x << separator << pt2y << rightBrace;
   return ostrm;
-}
-
-int main() {
-  OrtoRegt test;
-
-  OrtoRegt test2(12, 0, 1, 2);
-  OrtoRegt test3(1, 1, 2, 2);
-  OrtoRegt test4(test2);
-  std::cout << test.high() << " " << test.width() << std::endl;
-  std::cout << test2.high() << " " << test2.width() << std::endl;
-  std::cout << test3.high() << " " << test3.width() << std::endl;
-  test3.move(1, 1);
-
-  return 0;
 }
