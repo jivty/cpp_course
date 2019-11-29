@@ -15,8 +15,8 @@ OrtoRegt::OrtoRegt(float t1x, float t1y, float t2x, float t2y)
 }
 
 bool OrtoRegt::contain(float tx, float ty) {
-  return pt1x <= tx && tx <= pt2x
-    && pt1y <= ty && ty <= pt2y;
+  return pt1x - eps < tx && tx < pt2x + eps
+    && pt1y - eps < ty && ty < pt2y + eps;
 }
 
 OrtoRegt OrtoRegt::intersect(OrtoRegt& rhs) {
@@ -26,7 +26,7 @@ OrtoRegt OrtoRegt::intersect(OrtoRegt& rhs) {
   float inpt2y = pt2y < rhs.pt2y ? pt2y : rhs.pt2y;
   if (!this->contain(inpt1x, inpt1y) || !this->contain(inpt2x, inpt2y)
     || !rhs.contain(inpt1x, inpt1y) || !rhs.contain(inpt2x, inpt2y)) {
-    throw std::exception("No intersection");
+    return { eps * eps, eps * eps, eps * eps, eps * eps };
   }
   return { inpt1x, inpt1y, inpt2x, inpt2y };
 }
@@ -54,10 +54,10 @@ inline std::ostream& operator<<(std::ostream& ostrm, OrtoRegt& rhs) {
   return rhs.writeTo(ostrm);
 }
 
-//std::istream& OrtoRegt::readFrom(std::istream& istrm) {}
+std::istream& OrtoRegt::readFrom(std::istream& istrm) {}
 
 std::ostream& OrtoRegt::writeTo(std::ostream& ostrm) const {
-  ostrm << leftBrace << pt1x << separator << pt1y << rightBrace <<
-    separator << leftBrace << pt2x << separator << pt2y << rightBrace;
+  ostrm << "Box : " << '(' << pt1x << ',' << pt1y << ')' 
+    << '(' << pt2x << ',' << pt2y << ')';
   return ostrm;
 }

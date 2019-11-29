@@ -21,13 +21,19 @@ public:
   std::istream& readFrom(std::istream& istrm);
   std::ostream& writeTo(std::ostream& ostrm) const;
 private:
-  float pt1x{ std::numeric_limits<float>::epsilon() };
-  float pt1y{ std::numeric_limits<float>::epsilon() };
-  float pt2x{ std::numeric_limits<float>::epsilon() };
-  float pt2y{ std::numeric_limits<float>::epsilon() };
-  const char leftBrace{ '(' };
-  const char rightBrace{ ')' };
-  const char separator{ ',' };
+  float eps{ std::numeric_limits<float>::epsilon() };
+  float pt1x{ eps };
+  float pt1y{ eps };
+  float pt2x{ eps };
+  float pt2y{ eps };
 };
+
+inline std::istream& operator>>(std::istream& istrm, OrtoRegt& rhs) {
+  return rhs.readFrom(istrm);
+}
+
+inline std::ostream& operator<<(std::ostream& ostrm, OrtoRegt& rhs) {
+  return rhs
+}
 
 #endif

@@ -17,14 +17,24 @@ public:
   bool contain(float tx, float ty);
   float length();
 
-  //std::istream& readFrom(std::istream& istrm);
-  //std::ostream& writeTo(std::ostream& ostrm);
+  std::istream& readFrom(std::istream& istrm);
+  std::ostream& writeTo(std::ostream& ostrm) const;
 private:
-  float pt1x{ std::numeric_limits<float>::epsilon() };
-  float pt1y{ std::numeric_limits<float>::epsilon() };
-  float pt2x{ std::numeric_limits<float>::epsilon() };
-  float pt2y{ std::numeric_limits<float>::epsilon() };
-};
+  float eps{ std::numeric_limits<float>::epsilon() };
+  float pt1x{ eps };
+  float pt1y{ eps };
+  float pt2x{ eps };
+  float pt2y{ eps };
+  static const char separator{ ',' };
+}
+
+inline std::ostream& operator<<(std::ostream& ostrm, const OrtoSegm& rhs) {
+  return rhs.writeTo(ostrm);
+}
+
+inline std::istream& operator>>(std::istream& istrm, OrtoSegm& rhs) {
+  return rhs.readFrom(istrm);
+}
 
 #endif
 
