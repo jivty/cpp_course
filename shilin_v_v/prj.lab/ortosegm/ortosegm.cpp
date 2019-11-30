@@ -5,7 +5,7 @@ OrtoSegm::OrtoSegm(float t1x, float t1y, float t2x, float t2y)
   : pt1x(t1x)
   , pt1y(t1y)
   , pt2x(t2x)
-  , pt2y(t1x) {
+  , pt2y(t2y) {
   if (fabs(t1x - t2x) > eps &&
     fabs(t1y - t2y) > eps) {
     throw std::invalid_argument("Not orto");
@@ -30,29 +30,54 @@ float OrtoSegm::length() {
   return pt2x - pt1x + pt2y - pt1y;
 }
 
-void OrtoSegm::move(float dx, float dy) {
+OrtoSegm& OrtoSegm::move(float dx, float dy) {
   pt1x += dx;
   pt1y += dy;
   pt2x += dx;
   pt2y += dy;
+  return *this;
 }
 
 bool OrtoSegm::contain(float tx, float ty) {
-  return pt1x - eps < tx && tx < pt2x + eps
-    && pt1y - eps < ty && ty < pt2y + eps;
+  return pt1x - eps <= tx && tx <= pt2x + eps
+    && pt1y - eps <= ty && ty <= pt2y + eps;
 }
 
-OrtoSegm OrtoSegm::intersect(OrtoSegm& rhs) {
-  float inpt1x = pt1x > rhs.pt1x ? pt1x : rhs.pt1x;
-  float inpt1y = pt1y > rhs.pt1y ? pt1y : rhs.pt1y;
-  float inpt2x = pt2x < rhs.pt2x ? pt2x : rhs.pt2x;
-  float inpt2y = pt2y < rhs.pt2y ? pt2y : rhs.pt2y;
-  if (!this->contain(inpt1x, inpt1y) || !this->contain(inpt2x, inpt2y)
-    || !rhs.contain(inpt1x, inpt1y) || !rhs.contain(inpt2x, inpt2y)) {
-    return { eps * eps, eps * eps, eps * eps, eps * eps };
-  }
-  return { inpt1x, inpt1y, inpt2x, inpt2y };
+float OrtoSegm::getLowLeftX() {
+  return pt1x;
+}
 
+float OrtoSegm::getLowLeftY() {
+  return pt1y;
+}
+
+float OrtoSegm::getTopRightX() {
+  return pt2x;
+}
+
+float OrtoSegm::getTopRightY() {
+  return pt2y;
+}
+
+OrtoSegm& intersect(OrtoSegm& lhs, OrtoSegm& rhs) {
+  constexpr float eps(std::numeric_limits<float>::epsilon());
+  float inpt1x = lhs.getLowLeftX() > rhs.getLowLeftX() ?
+    lhs.getLowLeftX() : rhs.getLowLeftX();
+  float inpt1y = lhs.getLowLeftY() > rhs.getLowLeftY() ?
+    lhs.getLowLeftY() : rhs.getLowLeftY();
+  float inpt2x = lhs.getTopRightX() < rhs.getTopRightX() ?
+    lhs.getTopRightX() : rhs.getTopRightX();
+  float inpt2y = lhs.getTopRightY() < rhs.getTopRightY() ?
+    lhs.getTopRightY() : rhs.getTopRightY();
+  if (lhs.contain(inpt1x, inpt1y) && lhs.contain(inpt2x, inpt2y)
+    && rhs.contain(inpt1x, inpt1y) && rhs.contain(inpt2x, inpt2y)) {
+    OrtoSegm ans(inpt1x, inpt1y, inpt2x, inpt2y);
+    return ans;
+  }
+  else {
+    OrtoSegm ans(eps * eps, eps * eps, eps * eps, eps * eps);
+    return ans;
+  }
 }
 
 std::ostream& OrtoSegm::writeTo(std::ostream& ostrm) const {

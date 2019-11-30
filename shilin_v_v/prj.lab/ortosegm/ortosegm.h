@@ -12,15 +12,19 @@ public:
   ~OrtoSegm() = default;
   OrtoSegm(float t1x, float t1y, float t2x, float t2y);
 
-  OrtoSegm intersect(OrtoSegm& rhs);
-  void move(float dx, float dy);
+  OrtoSegm& move(float dx, float dy);
   bool contain(float tx, float ty);
   float length();
+  float getLowLeftX();
+  float getLowLeftY();
+  float getTopRightX();
+  float getTopRightY();
 
   std::istream& readFrom(std::istream& istrm);
   std::ostream& writeTo(std::ostream& ostrm) const;
+
 private:
-  float eps{ std::numeric_limits<float>::epsilon() };
+  const float eps{ std::numeric_limits<float>::epsilon() };
   float pt1x{ eps };
   float pt1y{ eps };
   float pt2x{ eps };
@@ -30,6 +34,8 @@ private:
   static const char comma{ ',' };
   const char segm[5]{ 's','e','g','m',':' };
 };
+
+OrtoSegm& intersect(OrtoSegm& lhs, OrtoSegm& rhs);
 
 inline std::istream& operator>>(std::istream& istrm, OrtoSegm& rhs) {
   return rhs.readFrom(istrm);

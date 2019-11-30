@@ -25,15 +25,46 @@ void testContain(OrtoSegm segm, float x, float y) {
     << '(' << x << ',' << y << ')' << std::endl;
 }
 
+void showIntersection(OrtoSegm lhs, OrtoSegm rhs) {
+  OrtoSegm intrsct(intersect(lhs, rhs));
+  std::cout << lhs << " intersect " << rhs << " -> " << intrsct << std::endl;
+}
+
 int main() {
-  OrtoSegm test;
+  constexpr float eps(std::numeric_limits<float>::epsilon());
   try {
-    OrtoSegm test1(1, 1, 2, 2);
+    OrtoSegm testNotOrto(0, 0, 2*eps, 2*eps);
   }
   catch (std::invalid_argument) {
     std::cout << "Not orto is catched" << std::endl;
   }
-  OrtoSegm test2(1, 1, 1, 5);
+  std::cout << std::endl;
+  OrtoSegm test;
+  show(test);
+  test = OrtoSegm(0, 0, 0, 0);
+  OrtoSegm test2(12, 0, 1, 0);
+  show(test2);
   OrtoSegm test3(test2);
-  std::cout << "Not orto is catched" << std::endl;
+  show(test3);
+  OrtoSegm test4(-1, 19, 19, 19);
+  show(test4);
+  std::cout << std::endl;
+  std::cout << "move(1,-1) " << test4 << " -> ";
+  show(test4.move(1, -1));
+  std::cout << std::endl;
+  testContain(test4, 1, -1);
+  testContain(test2, 1, 0);
+  testContain(test3, 5, 0);
+  testContain(test, eps, eps);
+  std::cout << std::endl;
+  testParse("segm:(2,0)(2,3)");
+  testParse("segm :(2,0)(2,3)");
+  testParse("segm:   (2,0)(2,3)");
+  testParse("segm:( 2, 0)( 2, 3)");
+  std::cout << std::endl;
+  OrtoSegm test5(4, -4, 4, 4);
+  showIntersection(test, test4);
+  showIntersection(test2, test5);
+  OrtoSegm test6(test5);
+  showIntersection(test5, test6.move(0, 1));
 }

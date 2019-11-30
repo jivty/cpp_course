@@ -23,6 +23,7 @@ public:
 
   std::istream& readFrom(std::istream& istrm);
   std::ostream& writeTo(std::ostream& ostrm) const;
+
 private:
   const float eps{ std::numeric_limits<float>::epsilon() };
   float pt1x{ eps };
