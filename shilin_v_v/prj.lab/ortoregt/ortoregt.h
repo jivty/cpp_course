@@ -9,7 +9,7 @@ public:
   OrtoRegt() = default;
   OrtoRegt(float t1x, float t1y, float t2x, float t2y);
   OrtoRegt(OrtoRegt& obj) = default;
-  OrtoRegt& operator=(OrtoRegt& rhs) = default;
+  OrtoRegt& operator=(const OrtoRegt& rhs);
   ~OrtoRegt() = default;
 
   OrtoRegt intersect(OrtoRegt& rhs);
@@ -26,6 +26,10 @@ private:
   float pt1y{ eps };
   float pt2x{ eps };
   float pt2y{ eps };
+  static const char leftBracket{ '(' };
+  static const char rightBracket{ ')' };
+  static const char comma{ ',' };
+  const char box[4]{ 'b','o','x',':' };
 };
 
 inline std::istream& operator>>(std::istream& istrm, OrtoRegt& rhs) {
@@ -33,7 +37,7 @@ inline std::istream& operator>>(std::istream& istrm, OrtoRegt& rhs) {
 }
 
 inline std::ostream& operator<<(std::ostream& ostrm, OrtoRegt& rhs) {
-  return rhs
+  return rhs.writeTo(ostrm);
 }
 
 #endif

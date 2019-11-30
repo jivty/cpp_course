@@ -14,6 +14,14 @@ OrtoRegt::OrtoRegt(float t1x, float t1y, float t2x, float t2y)
   }
 }
 
+OrtoRegt& OrtoRegt::operator=(const OrtoRegt& rhs) {
+  pt1x = rhs.pt1x;
+  pt2x = rhs.pt2x;
+  pt1y = rhs.pt1y;
+  pt2y = rhs.pt2y;
+  return *this;
+}
+
 bool OrtoRegt::contain(float tx, float ty) {
   return pt1x - eps < tx && tx < pt2x + eps
     && pt1y - eps < ty && ty < pt2y + eps;
@@ -46,18 +54,43 @@ void OrtoRegt::move(float dx, float dy) {
   pt2y += dy;
 }
 
-inline std::istream& operator>>(std::istream& istrm, OrtoRegt& rhs) {
-  return rhs.readFrom(istrm);
+std::istream& OrtoRegt::readFrom(std::istream& istrm) {
+  char box[5];
+  char leftBracket1('0');
+  char leftBracket2('0');
+  char rightBracket1('0');
+  char rightBracket2('0');
+  char comma1('0');
+  char comma2('0');
+  float t1x(0);
+  float t1y(0);
+  float t2x(0);
+  float t2y(0);
+  istrm.get(box, 5);
+  if (std::strcmp(box, OrtoRegt::box)) {
+    istrm >> leftBracket1 >> t1x >> comma1 >> t1y >> rightBracket1
+      >> leftBracket2 >> t2x >> comma2 >> t2y >> rightBracket2;
+    if (istrm.good()) {
+      if (comma1 == comma && comma2 == comma
+        && leftBracket1 == leftBracket && leftBracket2 == leftBracket
+        && rightBracket1 == rightBracket && rightBracket2 == rightBracket) {
+        pt1x = t1x;
+        pt1y = t1y;
+        pt2x = t2x;
+        pt2y = t2y;
+      }
+      else {
+        istrm.setstate(std::ios_base::failbit);
+      }
+    }
+  } else {
+    istrm.setstate(std::ios_base::failbit);
+  }
+  return istrm;
 }
-
-inline std::ostream& operator<<(std::ostream& ostrm, OrtoRegt& rhs) {
-  return rhs.writeTo(ostrm);
-}
-
-std::istream& OrtoRegt::readFrom(std::istream& istrm) {}
 
 std::ostream& OrtoRegt::writeTo(std::ostream& ostrm) const {
-  ostrm << "Box : " << '(' << pt1x << ',' << pt1y << ')' 
+  ostrm << "box:" << '(' << pt1x << ',' << pt1y << ')' 
     << '(' << pt2x << ',' << pt2y << ')';
   return ostrm;
 }
