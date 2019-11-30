@@ -18,8 +18,8 @@ public:
   const float& at(const std::ptrdiff_t row_i, const std::ptrdiff_t col_i) const;
 
 private:
-  std::unique_ptr<float[]> data_{ nullptr };
-  std::unique_ptr<std::unique_ptr<float>[]> dataptr_{ nullptr };
+  std::shared_ptr<float[]> data_{ nullptr };
+  std::unique_ptr<std::shared_ptr<float>[]> dataptr_{ nullptr };
   std::ptrdiff_t col_{ 0 };
   std::ptrdiff_t row_{ 0 };
 };
