@@ -8,7 +8,7 @@ class OrtoSegm {
 public:
   OrtoSegm() = default;
   OrtoSegm(OrtoSegm& obj) = default;
-  OrtoSegm& operator=(OrtoSegm& obj) = default;
+  OrtoSegm& operator=(const OrtoSegm& obj);
   ~OrtoSegm() = default;
   OrtoSegm(float t1x, float t1y, float t2x, float t2y);
 
@@ -25,16 +25,18 @@ private:
   float pt1y{ eps };
   float pt2x{ eps };
   float pt2y{ eps };
-  static const char separator{ ',' };
+  static const char leftBracket{ '(' };
+  static const char rightBracket{ ')' };
+  static const char comma{ ',' };
+  const char segm[5]{ 's','e','g','m',':' };
+};
+
+inline std::istream& operator>>(std::istream& istrm, OrtoSegm& rhs) {
+  return rhs.readFrom(istrm);
 }
 
 inline std::ostream& operator<<(std::ostream& ostrm, const OrtoSegm& rhs) {
   return rhs.writeTo(ostrm);
 }
 
-inline std::istream& operator>>(std::istream& istrm, OrtoSegm& rhs) {
-  return rhs.readFrom(istrm);
-}
-
 #endif
-

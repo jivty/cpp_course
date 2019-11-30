@@ -12,16 +12,19 @@ public:
   OrtoRegt& operator=(const OrtoRegt& rhs);
   ~OrtoRegt() = default;
 
-  OrtoRegt intersect(OrtoRegt& rhs);
   bool contain(float tx, float ty);
-  void move(float dx, float dy);
+  OrtoRegt& move(float dx, float dy);
   float width();
   float high();
+  float getLowLeftX();
+  float getLowLeftY();
+  float getTopRightX();
+  float getTopRightY();
 
   std::istream& readFrom(std::istream& istrm);
   std::ostream& writeTo(std::ostream& ostrm) const;
 private:
-  float eps{ std::numeric_limits<float>::epsilon() };
+  const float eps{ std::numeric_limits<float>::epsilon() };
   float pt1x{ eps };
   float pt1y{ eps };
   float pt2x{ eps };
@@ -31,6 +34,8 @@ private:
   static const char comma{ ',' };
   const char box[4]{ 'b','o','x',':' };
 };
+
+OrtoRegt& intersect(OrtoRegt& lhs, OrtoRegt& rhs);
 
 inline std::istream& operator>>(std::istream& istrm, OrtoRegt& rhs) {
   return rhs.readFrom(istrm);
