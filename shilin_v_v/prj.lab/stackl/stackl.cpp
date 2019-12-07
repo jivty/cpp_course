@@ -15,7 +15,7 @@ StackL::StackL(const StackL& obj) {
     Node* objHead = obj.head_;
     head_ = new Node{ objHead->value_, nullptr };
     Node* mainHead = head_;
-    while (obj.head_->next_ != nullptr) {
+    while (objHead->next_ != nullptr) {
       head_->next_ = new Node{ objHead->next_->value_, nullptr };
       head_ = head_->next_;
       objHead = objHead->next_;
@@ -39,23 +39,27 @@ StackL::~StackL() {
 
 StackL& StackL::operator=(const StackL& obj) {
   if (this != &obj) {
-    Node* mainHead = head_;
-    head_ = head_->next_;
-    while (head_ != nullptr) {
-      Node* tmp = head_;
-      head_ = head_->next_;
-      delete tmp;
+    if (!this->is_empty())
+    {
+      while (head_->next_ != nullptr) {
+        Node* prevHead_ = head_;
+        head_ = head_->next_;
+        delete prevHead_;
+      }
+      delete head_;
+      head_ = nullptr;
     }
-    head_ = mainHead;
-    head_->next_ = nullptr;
-    Node* objHead = obj.head_;
-    head_->value_ = objHead->value_;
-    while (obj.head_->next_ != nullptr) {
-      head_->next_ = new Node{ objHead->next_->value_, nullptr };
-      head_ = head_->next_;
-      objHead = objHead->next_;
+    if (!obj.is_empty()) {
+      Node* objHead = obj.head_;
+      head_ = new Node{ objHead->value_, nullptr };
+      Node* mainHead = head_;
+      while (objHead->next_ != nullptr) {
+        head_->next_ = new Node{ objHead->next_->value_, nullptr };
+        head_ = head_->next_;
+        objHead = objHead->next_;
+      }
+      head_ = mainHead;
     }
-    head_ = mainHead;
   }
   return *this;
 }
