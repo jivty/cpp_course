@@ -70,9 +70,9 @@ void QueueA::pop() {
 }
 
 void QueueA::push(const float value) {
-  if ((iTail - iHead + 1) > capacity) {
+  if ((iTail - iHead + 2) > capacity) {
     this->resize(2 * (capacity + 1));
   }
-  iTail = &data_[(iTail - data_ + 1) % capacity];
   *iTail = value;
+  iTail = &data_[(iTail - data_ + 1) % capacity];
 }
