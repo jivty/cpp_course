@@ -2,18 +2,29 @@
 #include <catch2/catch.hpp>
 
 #include <dynarray/dynarray.h>
-#include  <limits>
 
-constexpr std::ptrdiff_t big_size = std::ptrdiff_t(std::numeric_limits<int>::max()) + 1;
+#include <limits>
+
+
+constexpr std::ptrdiff_t big_size =
+  static_cast<std::ptrdiff_t>(std::numeric_limits<int>::max() / sizeof(float) + 1);
+
 
 TEST_CASE("DynArray ctor", "[dynarray]") {
   CHECK(0 == DynArray().size());
   CHECK(15 == DynArray(15).size());
+
+#ifdef CHECK_DYNARRAY_BIG_SIZE_ALLOCK
+  // test with huge memory chunk allocation
   CHECK(big_size == DynArray(big_size).size());
+#endif
 
   DynArray ar(10);
   CHECK(ar[0] == Approx(0.0f));
   CHECK(ar[ar.size() - 1] == Approx(0.0f));
+
+  CHECK_NOTHROW(DynArray(0));
+  CHECK_THROWS(DynArray(-1));
 }
 
 TEST_CASE("DynArray copy ctor", "[dynarray]") {
@@ -98,4 +109,8 @@ TEST_CASE("DynArray resize()", "[dynarray]") {
   for (int i(5); i < 25; i += 1) {
     CHECK(ar[i] == 0.0f);
   }
+
+  CHECK_NOTHROW(ar.resize(0));
+  CHECK_NOTHROW(ar.resize(ar.size() * 5));
+  CHECK_THROWS(ar.resize(-1));
 }

@@ -5,7 +5,7 @@
 
 #include <array>
 #include <limits>
-#include <strstream>
+#include <sstream>
 #include <utility>
 
 constexpr double delta = std::numeric_limits<double>::epsilon();
