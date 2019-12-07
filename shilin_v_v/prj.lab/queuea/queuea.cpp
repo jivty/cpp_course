@@ -39,10 +39,17 @@ QueueA::~QueueA() {
 
 void QueueA::resize(const std::ptrdiff_t nsize) {
   float* tmpdata(new float[nsize]);
-  std::copy(data_, data_ + capacity, tmpdata);
-  std::fill(tmpdata + capacity, tmpdata + nsize, 0.0f);
+  if (iTail - iHead >= 0) {
+    std::copy(data_, data_ + capacity, tmpdata);
+    std::fill(tmpdata + capacity, tmpdata + nsize, 0.0f);
+    iHead = &tmpdata[iHead - data_];
+  } else {
+    std::copy(data_, data_ + (iTail - data_), tmpdata);
+    std::fill(tmpdata + (iTail - data_), tmpdata + nsize - capacity + (iHead - data_), 0.0f);
+    std::copy(data_ + (iHead - data_), data_ + capacity, tmpdata + nsize - capacity + (iHead - data_));
+    iHead = &tmpdata[nsize - capacity + (iHead - data_)];
+  }
   iTail = &tmpdata[iTail - data_];
-  iHead = &tmpdata[iHead - data_];
   delete[] data_;
   data_ = tmpdata;
   capacity = nsize;
@@ -70,7 +77,7 @@ void QueueA::pop() {
 }
 
 void QueueA::push(const float value) {
-  if ((iTail - iHead + 2) > capacity) {
+  if ((abs(iTail - iHead) + 2) > capacity) {
     this->resize(2 * (capacity + 1));
   }
   *iTail = value;

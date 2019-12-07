@@ -28,10 +28,8 @@ template <typename T>
 DynArrayT<T>::DynArrayT(const DynArrayT& arr)
   : size_(arr.size_)
   , capacity_(arr.capacity_)
-  , data_(new T[capacity_]) {
-  for (std::ptrdiff_t i = 0; i < size_; ++i) {
-    data_[i] = arr.data_[i];
-  }
+  , data_(new T[capacity_]{ 0.0f }) {
+  std::copy(arr.data_, arr.data_ + arr.size_, data_);
 }
 
 template <typename T>
@@ -42,7 +40,8 @@ DynArrayT<T>::DynArrayT(const std::ptrdiff_t size) {
   else {
     size_ = size;
     capacity_ = size;
-    data_ = new T[size] {0};
+    data_ = new T[size];
+    std::fill(data_, data_ + size, 0.0f);
   }
 }
 
@@ -50,20 +49,16 @@ template <typename T>
 DynArrayT<T>& DynArrayT<T>::operator=(const DynArrayT& rhs) {
   if (this != &rhs) {
     if (size_ >= rhs.size_) {
-      for (std::ptrdiff_t i = 0; i < size_; ++i) {
-        data_[i] = rhs.data_[i];
-      }
+      std::copy(rhs.data_, rhs.data_ + rhs.size_, data_);
       size_ = rhs.size_;
     }
     else {
       T* tmpdata_ = new T[rhs.size_];
-      for (std::ptrdiff_t i = 0; i < rhs.size_; ++i) {
-        tmpdata_[i] = rhs.data_[i];
-      }
-      size_ = rhs.size_;
-      capacity_ = rhs.capacity_;
+      std::copy(rhs.data_, rhs.data_ + rhs.size_, tmpdata_);
       delete[] data_;
       data_ = tmpdata_;
+      size_ = rhs.size_;
+      capacity_ = rhs.capacity_;
     }
   }
   return *this;
@@ -90,7 +85,7 @@ std::ptrdiff_t DynArrayT<T>::capacity() const {
 template <typename T>
 T& DynArrayT<T>::operator[] (const std::ptrdiff_t index) {
   if (index < 0 || index >= size_) {
-    throw std::out_of_range("index is out of range");
+    throw std::out_of_range("DynArray::operator[] - index is out of range");
   }
   return data_[index];
 }
@@ -98,7 +93,7 @@ T& DynArrayT<T>::operator[] (const std::ptrdiff_t index) {
 template <typename T>
 const T& DynArrayT<T>::operator[] (const std::ptrdiff_t index) const {
   if (index < 0 || index >= size_) {
-    throw std::out_of_range("index is out of range");
+    throw std::out_of_range("DynArray::operator[] - index is out of range");
   }
   return data_[index];
 }
@@ -106,24 +101,20 @@ const T& DynArrayT<T>::operator[] (const std::ptrdiff_t index) const {
 template <typename T>
 void DynArrayT<T>::resize(const std::ptrdiff_t nsize) {
   if (nsize < 0) {
-    throw std::invalid_argument("new size is < 0");
+    throw std::invalid_argument("DynArray::resize - size is < 0");
   }
   else {
     if (nsize <= capacity_) {
       size_ = nsize;
     }
     else {
-      T* tmpdata = new T[nsize];
-      for (std::ptrdiff_t i = 0; i < size_; ++i) {
-        tmpdata[i] = data_[i];
-      }
-      for (std::ptrdiff_t i = size_; i < nsize; ++i) {
-        tmpdata[i] = 0;
-      }
-      size_ = nsize;
-      capacity_ = nsize;
+      T* tmpdata(new T[nsize]);
+      std::copy(data_, data_ + size_, tmpdata);
+      std::fill(tmpdata + size_, tmpdata + nsize, 0.0f);
       delete[] data_;
       data_ = tmpdata;
+      size_ = nsize;
+      capacity_ = nsize;
     }
   }
 }
