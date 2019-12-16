@@ -19,7 +19,7 @@ public:
 private:
   void resize(const std::ptrdiff_t nsize);
   float* data_{ nullptr };
-  float* iTail{ nullptr };
+  float* iTail{ nullptr }; //first free
   float* iHead{ nullptr };
   std::ptrdiff_t capacity{ 0 };
 };

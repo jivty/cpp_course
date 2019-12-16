@@ -1,28 +1,28 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
-#include <queuea/queuea.h>
+#include <queuel/queuel.h>
 
-TEST_CASE("Queuea is_empty", "[queuea]") {
-	CHECK(QueueA().is_empty());
+TEST_CASE("Queuea is_empty", "[queuel]") {
+	CHECK(QueueL().is_empty());
 	//
-	QueueA q;
+	QueueL q;
 	{
-		QueueA q_copy(q);
+		QueueL q_copy(q);
 		CHECK(q_copy.is_empty());
 	}
 	q.push(9);
 	CHECK(!q.is_empty());
 	{
-		QueueA q_copy(q);
+		QueueL q_copy(q);
 		CHECK(!q_copy.is_empty());
 	}
 	q.pop();
 	CHECK(q.is_empty());
 }
 
-TEST_CASE("Queuea operator=", "[queuea]") {
-	QueueA q, q_copy;
+TEST_CASE("Queuea operator=", "[queuel]") {
+	QueueL q, q_copy;
 	q_copy = q;
 	CHECK(q_copy.is_empty());
 	//
@@ -33,15 +33,15 @@ TEST_CASE("Queuea operator=", "[queuea]") {
 	q_copy = q_copy;
 	CHECK(!q_copy.is_empty());
 	// create empty queue
-	QueueA q_empty;
+	QueueL q_empty;
 	q_copy = q_empty;
 	CHECK(q_copy.is_empty());
 	q_empty = q_empty;
 	CHECK(q_empty.is_empty());
 }
 
-TEST_CASE("Queuea top", "[queuea]") {
-	QueueA q;
+TEST_CASE("Queuea top", "[queuel]") {
+	QueueL q;
 	q.push(9);
 	CHECK(q.top() == 9);
 	q.pop();
@@ -71,8 +71,8 @@ TEST_CASE("Queuea top", "[queuea]") {
 	CHECK_THROWS(q.top());
 }
 
-TEST_CASE("Queuea copy", "[queuea]") {
-	QueueA q1, q2;
+TEST_CASE("Queuea copy", "[queuel]") {
+	QueueL q1, q2;
 
 	q1.push(1); q1.push(2); q1.push(3);
 	q2.push(4); q2.push(5); q2.push(6); q2.push(7);
@@ -115,8 +115,8 @@ TEST_CASE("Queuea copy", "[queuea]") {
 	}
 }
 
-TEST_CASE("Queuea push", "[queuea]") {
-	QueueA q;
+TEST_CASE("Queuea push", "[queuel]") {
+	QueueL q;
 
 	q.push(1); q.push(2); q.push(3); q.push(4); q.push(5); q.push(6);
 	// 1 2 3 4 5 6
@@ -125,7 +125,7 @@ TEST_CASE("Queuea push", "[queuea]") {
 	q.push(7); q.push(8); q.push(9);
 
 	SECTION("Push when iHead = 0"){
-		QueueA q_copy(q);
+		QueueL q_copy(q);
 		CHECK(q_copy.top() == 4);
 		q_copy.pop();
 		CHECK(q_copy.top() == 5);
@@ -142,7 +142,7 @@ TEST_CASE("Queuea push", "[queuea]") {
 	q.push(10);
 
 	SECTION("Push when iHead > 0"){
-		QueueA q_copy(q);
+		QueueL q_copy(q);
 		CHECK(q_copy.top() == 4);
 		q_copy.pop();
 		CHECK(q_copy.top() == 5);
