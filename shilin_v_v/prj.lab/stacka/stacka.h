@@ -1,6 +1,8 @@
 #ifndef STACKA_STACKA_H_122019
 #define STACKA_STACKA_H_122019
 
+#include <iosfwd>
+
 class StackA {
 public:
   StackA() = default;
