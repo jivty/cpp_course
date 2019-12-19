@@ -10,7 +10,7 @@ MatrixL::MatrixL(const MatrixL& mtrx)
   for (std::ptrdiff_t i(0); i < row_ * col_; ++i) {
     data_[i] = mtrx.data_[i];
   }
-  for (std::ptrdiff_t i(0); i < col_; ++i) {
+  for (std::ptrdiff_t i(0); i < row_; ++i) {
     dataptr_[i] = &data_[mtrx.dataptr_[i] - mtrx.data_.get()];
   }
 }

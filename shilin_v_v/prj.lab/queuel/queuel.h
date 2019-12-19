@@ -5,7 +5,7 @@
 #include <limits>
 
 class QueueL {
-public:
+ public:
   QueueL() = default;
   QueueL(const QueueL& obj);
   QueueL& operator=(const QueueL& obj);
@@ -17,10 +17,10 @@ public:
   const float& top() const;
   bool is_empty() const;
 
-private:
+ private:
   struct Node{
     ~Node() = default;
-    Node(float val, Node* next);
+    Node(const float val, Node* next);
     Node(const Node& obj) = default;
     Node& operator=(const Node& obj) = default;
     float value_{ std::numeric_limits<float>::epsilon() };
@@ -31,4 +31,4 @@ private:
 };
 
 
-#endif 
+#endif
