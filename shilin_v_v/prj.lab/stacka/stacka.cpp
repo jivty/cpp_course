@@ -1,4 +1,4 @@
-#include "stacka.h"
+#include <stacka/stacka.h>
 #include <iostream>
 
 bool StackA::is_empty() const {

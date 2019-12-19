@@ -1,4 +1,4 @@
-#include "rational.h"
+#include <rational/rational.h>
 #include <iostream>
 
 Rational& Rational::reduction() {

@@ -1,4 +1,4 @@
-#include "ortosegm.h"
+#include <ortosegm/ortosegm.h>
 #include <iostream>
 #include <sstream>
 

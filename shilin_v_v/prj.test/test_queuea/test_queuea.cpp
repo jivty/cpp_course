@@ -1,4 +1,4 @@
-#include "queuea.h"
+#include <queuea/queuea.h>
 #include <iostream>
 
 int main() {

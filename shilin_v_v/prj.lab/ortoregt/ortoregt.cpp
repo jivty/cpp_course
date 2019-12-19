@@ -1,4 +1,4 @@
-#include "ortoregt.h"
+#include <ortoregt/ortoregt.h>
 #include <iostream>
 
 OrtoRegt::OrtoRegt(float t1x, float t1y, float t2x, float t2y)

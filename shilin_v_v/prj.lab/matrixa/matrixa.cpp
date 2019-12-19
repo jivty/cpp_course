@@ -1,4 +1,4 @@
-#include "matrixa.h"
+#include <matrixa/matrixa.h>
 #include <iostream>
 
 MatrixA::MatrixA(const MatrixA& mtrx)

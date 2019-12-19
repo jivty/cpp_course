@@ -1,4 +1,4 @@
-#include "queuel.h"
+#include <queuel/queuel.h>
 #include <stdexcept>
 
 QueueL::Node::Node(const float val, Node* obj)

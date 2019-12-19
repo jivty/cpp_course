@@ -1,4 +1,4 @@
-#include "ortoregt.h"
+#include <ortoregt/ortoregt.h>
 #include <iostream>
 #include <sstream>
 

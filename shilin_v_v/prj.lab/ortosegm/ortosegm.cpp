@@ -1,4 +1,4 @@
-#include "ortosegm.h"
+#include <ortosegm/ortosegm.h>
 #include <iostream>
 
 OrtoSegm::OrtoSegm(float t1x, float t1y, float t2x, float t2y)

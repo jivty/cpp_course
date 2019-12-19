@@ -1,4 +1,4 @@
-#include "stacka.h"
+#include <stacka/stacka.h>
 #include <iostream>
 
 int main() {

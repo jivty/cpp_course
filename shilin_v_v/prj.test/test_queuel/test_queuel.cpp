@@ -1,4 +1,4 @@
-#include "queuel.h"
+#include <queuel/queuel.h>
 #include <iostream>
 
 void clearandshow(QueueL& obj) {

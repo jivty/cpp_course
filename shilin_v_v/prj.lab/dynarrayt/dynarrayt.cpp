@@ -1,2 +1,2 @@
-#include "dynarrayt.h"
+#include <dynarrayt/dynarrayt.h>
 #include <iostream>

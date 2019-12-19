@@ -1,4 +1,4 @@
-#include "dynarray.h"
+#include <dynarray/dynarray.h>
 #include <iostream>
 #include <vector>
 

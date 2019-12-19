@@ -1,4 +1,4 @@
-#include "stackl.h"
+#include <stackl/stackl.h>
 #include <sstream>
 
 int main() {

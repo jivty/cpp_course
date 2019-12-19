@@ -1,4 +1,4 @@
-#include "stackl.h"
+#include <stackl/stackl.h>
 #include <iostream>
 
 StackL::Node::Node(float val, Node* next)

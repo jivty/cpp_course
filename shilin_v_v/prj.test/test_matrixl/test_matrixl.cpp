@@ -1,4 +1,4 @@
-#include "matrixl.h"
+#include <matrixl/matrixl.h>
 #include <iostream>
 
 int main() {
