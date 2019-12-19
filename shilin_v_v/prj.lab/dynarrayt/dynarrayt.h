@@ -28,7 +28,7 @@ template <typename T>
 DynArrayT<T>::DynArrayT(const DynArrayT& arr)
   : size_(arr.size_)
   , capacity_(arr.capacity_)
-  , data_(new T[capacity_]{ 0.0f }) {
+  , data_(new T[capacity_]) {
   std::copy(arr.data_, arr.data_ + arr.size_, data_);
 }
 
@@ -41,7 +41,6 @@ DynArrayT<T>::DynArrayT(const std::ptrdiff_t size) {
     size_ = size;
     capacity_ = size;
     data_ = new T[size];
-    std::fill(data_, data_ + size, 0.0f);
   }
 }
 
@@ -110,7 +109,6 @@ void DynArrayT<T>::resize(const std::ptrdiff_t nsize) {
     else {
       T* tmpdata(new T[nsize]);
       std::copy(data_, data_ + size_, tmpdata);
-      std::fill(tmpdata + size_, tmpdata + nsize, 0.0f);
       delete[] data_;
       data_ = tmpdata;
       size_ = nsize;
