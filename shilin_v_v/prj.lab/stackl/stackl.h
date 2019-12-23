@@ -1,7 +1,6 @@
 #ifndef STACKL_STACKL_H_122019
 #define STACKL_STACKL_H_122019
 
-#include <memory>
 #include <limits>
 
 class StackL {
