@@ -4,7 +4,6 @@
 Tower::Tower(const sf::Vector2f position, std::shared_ptr<sf::Texture> _texture, TowerType _type,
   int damage, float range, float cooldown, int upgCost = 20)
   : Clickable(position, sf::Vector2f(Clickable::gridSize, gridSize))
-  , coordinate(position)
   , towerPos(position)
   , texture(_texture)
   , type(_type)
@@ -25,10 +24,6 @@ TowerType Tower::getTowerType() const {
 	return this->type;
 }
 
-void Tower::setPosition(sf::Vector2f newPosition) {
-	towerSprite.setPosition(newPosition);
-}
-
 void Tower::decreaseCooldown() {
 	this->currentCooldown--;
 }
@@ -38,6 +33,7 @@ void Tower::resetCooldown() {
 
 void Tower::update() {
 }
+
 void Tower::render(sf::RenderWindow& _window) {
 	_window.draw(this->towerSprite);
 }
@@ -76,15 +72,10 @@ sf::Sprite Tower::getTowerSprite() const {
 	return towerSprite;
 }
 
-sf::Vector2f Tower::getOriginalTowerPosition()
-{
-	return coordinate;
-}
-
 float Tower::enemyDistance(sf::Vector2f enemy)
 		{
-	float x = (coordinate.x - enemy.x) * (coordinate.x - enemy.x);
-	float y = (coordinate.y - enemy.y) * (coordinate.y - enemy.y);
+	float x = (towerPos.x - enemy.x) * (towerPos.x - enemy.x);
+	float y = (towerPos.y - enemy.y) * (towerPos.y - enemy.y);
 	float xPlusY = x + y;
 	return (float) (powf(xPlusY, 0.5)); 
 }

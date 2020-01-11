@@ -1,10 +1,7 @@
 #include "GameController.h"
 #include "GameMenuController.h"
 #include "EnemyController.h"
-#include "TowerController.h"
-#include "TowerAndEnemyController.h"
-#include "Tower.h"
-#include "GameState.h"
+#include "BulletController.h"
 #include "Timer.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -236,6 +233,31 @@ GameBoard::GameBoard(std::shared_ptr<GameState> _gameState,
   buttonCancel.setFillColor(sf::Color::Transparent);
   buttonCancel.setOutlineThickness(-2);
   buttonCancel.setOutlineColor(sf::Color(180, 190, 180, 10));
+
+  std::ptrdiff_t size(path.size());
+  size -= 1;
+  for (std::ptrdiff_t i(0); i < size; i++) {
+    sf::Vector2i curr = sf::Vector2i(path[i]);
+    sf::Vector2i next = sf::Vector2i(path[i + 1]);
+    if (curr.x == next.x) {
+      while (curr.y != next.y) {
+        if (curr.y < next.y)
+          curr.y++;
+        else
+          curr.y--;
+        gridStatus[curr.x][curr.y] = 1;
+      }
+    }
+    else if (curr.y == next.y) {
+      while (curr.x != next.x) {
+        if (curr.x < next.x)
+          curr.x++;
+        else
+          curr.x--;
+        gridStatus[curr.x][curr.y] = 1;
+      }
+    }
+  }
 }
 
 void GameBoard::updCounters() {
@@ -292,9 +314,10 @@ void GameBoard::process(sf::Event event, sf::Vector2i mousePos) {
 
 void GameBoard::render() {
 	sf::Vector2i mousePos = gameState->mousePos;
-
   window->draw(background);
-	for (unsigned int i = 0; i < path.size() - 1; i++) {
+  std::ptrdiff_t size(path.size());
+  size -= 1;
+	for (std::ptrdiff_t i(0); i < size; i++) {
 		sf::Vector2i curr = sf::Vector2i(path[i]);
 		sf::Vector2i next = sf::Vector2i(path[i + 1]);
 		if (curr.x == next.x) {
@@ -305,7 +328,6 @@ void GameBoard::render() {
 					curr.y++;
 				else
 					curr.y--;
-				gridStatus[curr.x][curr.y] = 1;
 			}
 		} else if (curr.y == next.y) {
 			while (curr.x != next.x) {
@@ -315,11 +337,9 @@ void GameBoard::render() {
 					curr.x++;
 				else
 					curr.x--;
-				gridStatus[curr.x][curr.y] = 1;
 			}
 		}
 	}
-
 	TowerType type = gameState->getPurchaseTower();
 	if (type != TowerType::empty) {
 		renderRange(mousePos.x, mousePos.y,
@@ -362,7 +382,7 @@ void GameBoard::renderShadow(int mouseX, int mouseY, int range) {
 	int gridY = ceil(mouseY / Clickable::gridSize);
 	shadowTile.setSize(sf::Vector2f(range* Clickable::gridSize, range* Clickable::gridSize));
 	shadowTile.setPosition(gridX * Clickable::gridSize, gridY * Clickable::gridSize);
-  if (gridSpaceAvailable(gridX, gridY)) {
+  if (gridSpaceAvailable(gridX, gridY) && towerIsPurchasable(gameState->getPurchaseTower())) {
     shadowTile.setFillColor(sf::Color(0, 255, 0, 150));
   } else {
     shadowTile.setFillColor(sf::Color(255, 0, 0, 150));
@@ -463,7 +483,7 @@ void saveGame(std::shared_ptr<GameState>& gamestate,
 
 void loadGame(std::shared_ptr<GameState>& gamestate,
   std::shared_ptr<TowerController>& tower, std::shared_ptr<EnemyController>& enemy,
-  std::shared_ptr<GameBoard>& gameboard, std::shared_ptr<TowerAndEnemyController>& tae) {
+  std::shared_ptr<GameBoard>& gameboard, std::shared_ptr<BulletController>& tae) {
   if (!gamestate->loadData("data/dataGS.txt")
     || !tower->loadData("data/dataTC.txt")
     || !enemy->loadData("data/dataEC.txt")
@@ -485,7 +505,7 @@ void GameBoard::deathloop() {
   window->draw(menuBackground);
 	window->draw(deathScreen);
 	window->display();
-	while (isEndGame && !isRunning && window->isOpen()) {
+	while (!isRestarted && isEndGame && !isRunning && window->isOpen()) {
 		while (window->pollEvent(event)) {
 			if (event.type == sf::Event::EventType::Closed) {
         saveMusicSettings();
@@ -751,7 +771,7 @@ void GameBoard::menuConfirmation() {
 void startNewGame(std::shared_ptr<sf::RenderWindow> &window, std::shared_ptr<Timer> &timer,
   std::shared_ptr<GameState> &gamestate, std::shared_ptr<GameMenuController> &gamemenu,
   std::shared_ptr<TowerController> &tower, std::shared_ptr<EnemyController> &enemy,
-  std::shared_ptr<GameBoard> &gameboard, std::shared_ptr<TowerAndEnemyController> &tae) {
+  std::shared_ptr<GameBoard> &gameboard, std::shared_ptr<BulletController> &tae) {
   gameboard->showLoading();
   timer = std::make_shared<Timer>();
   gamestate->timer = timer;
@@ -760,7 +780,7 @@ void startNewGame(std::shared_ptr<sf::RenderWindow> &window, std::shared_ptr<Tim
   tower = std::make_shared<TowerController>(window, gamestate);
   enemy = std::make_shared<EnemyController>(window, gamestate, gameboard->path);
   gameboard = std::make_shared<GameBoard>(gamestate, tower, gamemenu->getMenuPos().x, window);
-  tae = std::make_shared<TowerAndEnemyController>(window, gamestate, enemy, tower->getTowerVec(), enemy->getEnemyVec());
+  tae = std::make_shared<BulletController>(window, gamestate, enemy, tower->getTowerVec(), enemy->getEnemyVec());
   gameboard->isEndGame = false;
   gameboard->isRunning = true;
   gameboard->isRestarted = false;
@@ -777,7 +797,6 @@ void GameBoard::showLoading() {
 
 int main() {
   std::shared_ptr<sf::RenderWindow> window;
-  bool debug = false;
 	window = std::make_shared<sf::RenderWindow>(sf::VideoMode(1280, 720), 
     "Tower Defence", sf::Style::Close);
 	window->setFramerateLimit(60);
@@ -790,7 +809,7 @@ int main() {
 			gameMenuController->getMenuPos().x, window));
   std::shared_ptr<EnemyController> enemyController(std::make_shared<EnemyController>(window, gameState,
     gameBoard->path));
-	std::shared_ptr<TowerAndEnemyController> attackController(std::make_shared<TowerAndEnemyController>(
+	std::shared_ptr<BulletController> attackController(std::make_shared<BulletController>(
 			window, gameState, enemyController, towerController->getTowerVec(),
 			enemyController->getEnemyVec()));
   loadGame(gameState, towerController, 
@@ -798,7 +817,6 @@ int main() {
   if (gameBoard->loadMusicSettings()) {
     gameState->getMusic()->play();
   }
-	gameMenuController->setDebug(debug);
 
 	while (window->isOpen()) {
     if (gameBoard->isMenu) {
@@ -821,8 +839,7 @@ int main() {
             if (gameBoard->isRunning && !gameBoard->isEndGame) {
               gameBoard->isMenuAsking = true;
               gameBoard->menuSaving();
-            }
-            else {
+            } else {
               gameBoard->saveMusicSettings();
               window->close();
             }
@@ -842,8 +859,7 @@ int main() {
         if (gameBoard->isRunning && !gameBoard->isEndGame) {
           gameBoard->isMenuAsking = true;
           gameBoard->menuSaving();
-        }
-        else {
+        } else {
           gameBoard->saveMusicSettings();
           window->close();
         }
@@ -852,8 +868,7 @@ int main() {
         && event.key.code == sf::Keyboard::Escape) {
         if (gameState->getBoardTower() != nullptr) {
           gameState->setBoardTower(nullptr);
-        }
-        else if (gameState->getPurchaseTower() != TowerType::empty) {
+        } else if (gameState->getPurchaseTower() != TowerType::empty) {
           gameState->setPurchaseTower(TowerType::empty);
         } else {
           gameBoard->isMenu = true;
@@ -879,9 +894,7 @@ int main() {
         }
 
         if (gameState->dirtyBit) {
-          gameBoard->waveText.setString(std::to_string(gameState->getCurrentWave()));
-          gameBoard->healthText.setString(std::to_string(gameState->getHealth()));
-          gameBoard->goldText.setString(std::to_string(gameState->getGold()));
+          gameBoard->updCounters();
           gameState->dirtyBit = false;
         }
         window->clear();
@@ -890,13 +903,7 @@ int main() {
         towerController->render();
         gameMenuController->render();
         attackController->render();
-        gameBoard->renderLabels();/*
-        if (debug) {
-          gameBoard->text.setString(std::to_string(clk->elapsedTicks()));
-          gameBoard->text.setFont(gameBoard->font);
-          gameBoard->text.setPosition(float(mousePos.x), float(mousePos.y));
-          window->draw(gameBoard->text);
-        }*/
+        gameBoard->renderLabels();
         if (gameState->getHealth() < 1) {
           clk->stop();
           gameBoard->deathloop();

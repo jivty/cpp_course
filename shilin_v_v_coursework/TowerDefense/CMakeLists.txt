@@ -19,7 +19,7 @@ set(prj_headers
     MenuButton.h
     Timer.h
     Tower.h
-    TowerAndEnemyController.h
+    BulletController.h
     TowerButton.h
     TowerController.h
 )
@@ -35,7 +35,7 @@ set(prj_sources
     MenuButton.cpp
     Timer.cpp
     Tower.cpp
-    TowerAndEnemyController.cpp
+    BulletController.cpp
     TowerButton.cpp
     TowerController.cpp
 )

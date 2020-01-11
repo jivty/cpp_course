@@ -1,8 +1,8 @@
 #include "Bullet.h"
 
 Bullet::Bullet(int ind, int _damage,
-		sf::Vector2f towerPosition, weak_ptr<Enemy> enemyToFireAt, TowerType tType) 
-  :  index(ind)
+		sf::Vector2f towerPosition, std::weak_ptr<Enemy> enemyToFireAt, TowerType tType) 
+  : index(ind)
   , damage(_damage)
   , bulletPosition(towerPosition)
   , enemyTarget(enemyToFireAt)
@@ -54,11 +54,12 @@ float Bullet::DistanceFromEnemy(sf::Vector2f enemy) {
 					* (enemy.y - bulletPosition.y));
 	return (int) (powf(x + y, 0.5));
 }
+
 bool Bullet::bulletEnemyCollision(sf::Vector2f enemy) {
 	return DistanceFromEnemy(enemy) < 20;
 } 
 
-weak_ptr<Enemy> Bullet::getEnemyTarget() {
+std::weak_ptr<Enemy> Bullet::getEnemyTarget() {
 	return enemyTarget;
 }
 

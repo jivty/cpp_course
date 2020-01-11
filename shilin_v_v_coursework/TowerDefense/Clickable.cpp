@@ -27,10 +27,6 @@ const sf::Vector2f& Clickable::getSize() const {
 	return size;
 }
 
-void Clickable::setDebug(bool mode) {
-	debug = mode;
-}
-
 bool Clickable::insideShape(const sf::Vector2i& mousePos) {
 	if (((mousePos.x >= position.x) && (mousePos.x <= (position.x + size.x)))) {
 		if ((mousePos.y >= position.y)
@@ -56,13 +52,6 @@ void Clickable::process(const sf::Event& event, const sf::Vector2i& mousePos) {
 		} else if ((event.type == sf::Event::MouseButtonReleased)
 				&& (event.mouseButton.button == sf::Mouse::Left) && isPressed) {
 			onClick();
-			update();
-		}
-		if (debug && (sf::Mouse::isButtonPressed(sf::Mouse::Left))) {
-			sf::Vector2f temp = getSize();
-			setPosition(
-					sf::Vector2f(mousePos.x - (temp.x / 2),
-							mousePos.y - (temp.y / 2)));
 			update();
 		}
 	} else if (isHovering == 1) {

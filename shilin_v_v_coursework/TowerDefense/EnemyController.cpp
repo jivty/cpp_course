@@ -6,7 +6,7 @@ EnemyController::EnemyController(std::shared_ptr<sf::RenderWindow> _window,
   :	window(_window)
   , gameState(_gameState)
   , pathInCubits(_path) {
-  enemyVec = std::make_shared<std::vector<shared_ptr<Enemy>>>();
+  enemyVec = std::make_shared<std::vector<std::shared_ptr<Enemy>>>();
   switch (gameState->getDifficulty()) {
   case 1:
     modifier = 1.1f;
@@ -41,15 +41,21 @@ EnemyController::EnemyController(std::shared_ptr<sf::RenderWindow> _window,
 }
 
 std::shared_ptr<Enemy> EnemyController::spawnEnemy(sf::Vector2f position,
-		EnemyType type, int health = -1, int targetPath = 0) {
+		EnemyType type, int health, int targetPath) {
   if (type == EnemyType::empty) {
     return nullptr;
   }
 	std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>());
 	std::map<std::string, int> props;
   float modifierSpeed(modifier);
-  if (modifierSpeed > 8) {
-    modifierSpeed = 8;
+  if (modifierSpeed > 3) {
+    if (gameState->getDifficulty() == 1) {
+      modifierSpeed = 3;
+    } else if (modifierSpeed > 6 && gameState->getDifficulty() == 2) {
+      modifierSpeed = 5;
+    } else {
+      modifierSpeed = 8;
+    }
   }
   std::shared_ptr<sf::Texture> texture(nullptr);
   int _health = -1;
@@ -59,7 +65,7 @@ std::shared_ptr<Enemy> EnemyController::spawnEnemy(sf::Vector2f position,
     _health = (health < 0 ? props["health"] * modifier : health);
     texture = std::make_shared<sf::Texture>(enemySpriteS);
     enemy = std::make_shared<Enemy>(position, enemyBaseSize, texture,
-      props["gold"] * modifier * gameState->getDifficulty(), _health, props["damage"] * modifier,
+      props["gold"] * modifier * (int)(std::ceil(3.0f / (float)gameState->getDifficulty())), _health, props["damage"] * modifier,
       props["speed"] * modifierSpeed, EnemyType::skeleton, targetPath);
     break;
   case EnemyType::demon:
@@ -67,7 +73,7 @@ std::shared_ptr<Enemy> EnemyController::spawnEnemy(sf::Vector2f position,
     _health = (health < 0 ? props["health"] * modifier : health);
     texture = std::make_shared<sf::Texture>(enemySpriteD);
     enemy = std::make_shared<Enemy>(position, enemyBaseSize, texture,
-      props["gold"] * modifier * gameState->getDifficulty(), _health, props["damage"] * modifier,
+      props["gold"] * modifier * (int)(std::ceil(3.0f / (float)gameState->getDifficulty())), _health, props["damage"] * modifier,
       props["speed"] * modifierSpeed, EnemyType::demon, targetPath);
     break;
 	case EnemyType::lancer:
@@ -75,7 +81,7 @@ std::shared_ptr<Enemy> EnemyController::spawnEnemy(sf::Vector2f position,
     _health = (health < 0 ? props["health"] * modifier : health);
     texture = std::make_shared<sf::Texture>(enemySpriteL);
 		enemy = std::make_shared<Enemy>(position, enemyBaseSize, texture,
-				props["gold"] * modifier * gameState->getDifficulty(), _health, props["damage"] * modifier,
+				props["gold"] * modifier * (int)(std::ceil(3.0f / (float)gameState->getDifficulty())), _health, props["damage"] * modifier,
 				props["speed"] * modifierSpeed, EnemyType::lancer, targetPath);
 		break;
   case EnemyType::rhino:
@@ -83,7 +89,7 @@ std::shared_ptr<Enemy> EnemyController::spawnEnemy(sf::Vector2f position,
     _health = (health < 0 ? props["health"] * modifier : health);
     texture = std::make_shared<sf::Texture>(enemySpriteR);
     enemy = std::make_shared<Enemy>(position, enemyBaseSize, texture,
-      props["gold"] * modifier * gameState->getDifficulty(), _health, props["damage"] * modifier,
+      props["gold"] * modifier * (int)(std::ceil(3.0f / (float)gameState->getDifficulty())), _health, props["damage"] * modifier,
       props["speed"] * modifierSpeed, EnemyType::rhino, targetPath);
     break;
 	}
@@ -202,7 +208,6 @@ void EnemyController::waveEND() {
   if (counter >= 1000) {
     counter = 0;
     this->modifier *= 3;
-    //wave++;
     gameState->setCurrentWave(gameState->getCurrentWave() + 1);
   }
 }
@@ -295,7 +300,7 @@ void EnemyController::update() {
 }
 
 void EnemyController::render() {
-	for (shared_ptr<Enemy> enemy : *enemyVec) {
+	for (std::shared_ptr<Enemy> enemy : *enemyVec) {
 		enemy->render(window);
 	}
 }
@@ -308,7 +313,7 @@ void EnemyController::setModifier(float _modifier) {
 	this->modifier = _modifier;
 }
 
-std::shared_ptr<std::vector<shared_ptr<Enemy>>> EnemyController::getEnemyVec() const {
+std::shared_ptr<std::vector<std::shared_ptr<Enemy>>> EnemyController::getEnemyVec() const {
 	return this->enemyVec;
 }
 

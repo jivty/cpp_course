@@ -1,7 +1,7 @@
 #include "Enemy.h"
 
 Enemy::Enemy(sf::Vector2f _position, sf::Vector2f _size, std::shared_ptr<sf::Texture> _texture,
-		int _gold, int _health, int _damage, float _pixelSpeed, EnemyType _type, int targetPath = 0)
+		int _gold, int _health, int _damage, float _pixelSpeed, EnemyType _type, int targetPath)
   :	texture(_texture)
   , goldValue(_gold)
   , health(_health)
@@ -16,6 +16,7 @@ Enemy::Enemy(sf::Vector2f _position, sf::Vector2f _size, std::shared_ptr<sf::Tex
 
 	shape.setFillColor(sf::Color(255, 255, 255, 255));
 } 
+
 void Enemy::setFrames(std::shared_ptr<sf::Texture> texture, EnemyType type) {
   int size_x(0);
   int size_y(0);

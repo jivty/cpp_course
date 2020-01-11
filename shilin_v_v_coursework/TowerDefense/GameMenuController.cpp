@@ -47,10 +47,9 @@ GameMenuController::GameMenuController(std::shared_ptr<sf::RenderWindow> windowP
     std::cerr << "The texture does not exist" << std::endl;
   }
   texturesVector.push_back(_textureTU);
-	std::cerr << menuPos.x << ", " << menuPos.y << std::endl;
-	std::map<string, int> props1 = gameState->getTowerProps(TowerType::physic);
-	std::map<string, int> props2 = gameState->getTowerProps(TowerType::magic);
-	std::map<string, int> props3 = gameState->getTowerProps(TowerType::ultimate);
+	std::map<std::string, int> props1 = gameState->getTowerProps(TowerType::physic);
+	std::map<std::string, int> props2 = gameState->getTowerProps(TowerType::magic);
+	std::map<std::string, int> props3 = gameState->getTowerProps(TowerType::ultimate);
 
   std::shared_ptr<sf::Texture> _menuTexture(std::make_shared<sf::Texture>());
   if (!_menuTexture->loadFromFile("images/menuButtons.png")) {
@@ -60,25 +59,25 @@ GameMenuController::GameMenuController(std::shared_ptr<sf::RenderWindow> windowP
 
 	std::shared_ptr<TowerButton> _clickable;
 	_clickable = std::make_shared<TowerButton>(menuPosition(1.4, 2.2), towerButtonCubits,
-			_textureTP, to_string(props1["gold"]),
-			"Damage: " + to_string(props1["damage"]) + "\nRate: "
-					+ to_string(props1["cooldown"]), TowerType::physic,
+			_textureTP, std::to_string(props1["gold"]),
+			"Damage: " + std::to_string(props1["damage"]) + "\nRate: "
+					+ std::to_string(props1["cooldown"]), TowerType::physic,
 			gameState, _menuTexture);
 	_clickable->setTextureRect(sf::IntRect(5, -2, 75, 86));
 	towerButtonVec.push_back(_clickable);
 
 	_clickable = std::make_shared<TowerButton>(menuPosition(1.4, 6.2), towerButtonCubits,
-			_textureTM, to_string(props2["gold"]),
-			"Damage: " + to_string(props2["damage"]) + "\nRate: "
-					+ to_string(props2["cooldown"]), TowerType::magic,
+			_textureTM, std::to_string(props2["gold"]),
+			"Damage: " + std::to_string(props2["damage"]) + "\nRate: "
+					+ std::to_string(props2["cooldown"]), TowerType::magic,
 			gameState, _menuTexture);
 	_clickable->setTextureRect(sf::IntRect(5, -2, 75, 86));
 	towerButtonVec.push_back(_clickable);
 
 	_clickable = std::make_shared<TowerButton>(menuPosition(1.4, 10.2), towerButtonCubits,
-			_textureTU, to_string(props3["gold"]),
-			"Damage: " + to_string(props3["damage"]) + "\nRate: "
-					+ to_string(props3["cooldown"]), TowerType::ultimate,
+			_textureTU, std::to_string(props3["gold"]),
+			"Damage: " + std::to_string(props3["damage"]) + "\nRate: "
+					+ std::to_string(props3["cooldown"]), TowerType::ultimate,
 			gameState, _menuTexture);
 	_clickable->setTextureRect(sf::IntRect(5, -2, 75, 86));
 	towerButtonVec.push_back(_clickable);
@@ -101,20 +100,6 @@ GameMenuController::GameMenuController(std::shared_ptr<sf::RenderWindow> windowP
 	_upgrade->setTextureRect(sf::IntRect(1060, 384, 300, 128));
 	this->upgradeButton = _upgrade;
 	clickVec.push_back(_upgrade);
-}
-
-GameMenuController::~GameMenuController() {
-}
-
-void GameMenuController::setDebug(bool mode) {
-	if (mode) {
-		for (auto c : towerButtonVec) {
-			c->setDebug(true);
-		}
-		for (auto c : clickVec) {
-			c->setDebug(true);
-		}
-	}
 }
 
 void GameMenuController::process(sf::Event event, sf::Vector2i mousePos) {

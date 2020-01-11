@@ -1,4 +1,4 @@
-#ifndef TD_TIMER_H
+﻿#ifndef TD_TIMER_H
 #define TD_TIMER_H
 
 #include <chrono>
@@ -7,20 +7,36 @@
 #include <fstream>
 #include <iostream>
 
+//! \brief Таймер.
 class Timer {
 public:
+
+  //! \brief Умолчательный конструктор.
 	Timer();
+
+  //! \brief Деструктор.
   ~Timer() = default;
+
+  //! \brief Запускает таймер.
 	void start();
+
+  //! \brief Останавливает таймер.
 	void stop();
+
+  //! \brief Количество миллисекунд с момента начала игры.
 	double elapsedMilliseconds();
+
+  //! \brief Количество секунд с момента начала игры.
 	double elapsedSeconds();
+
+  //! \brief Количество тиков с момента начала игры.
 	double elapsedTicks();
+
+  //! \brief Возвращает true, если таймер запущен.
 	bool isRunning();
+
+  //! \brief Возвращает true, если был совершен еще один тик.
 	bool newTick();
-  bool saveData(const std::string path);
-  bool loadData(const std::string path);
-  void setDefault();
 
 private:
 	std::chrono::time_point<std::chrono::system_clock> m_StartTime;

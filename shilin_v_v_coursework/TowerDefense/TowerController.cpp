@@ -37,7 +37,7 @@ std::shared_ptr<Tower> TowerController::spawnTower(sf::Vector2f position, TowerT
       texture = std::make_shared<sf::Texture>(ultimateTexture);
       break;
     }
-  std::map<string, int> props = gameState->getTowerProps(type);
+  std::map<std::string, int> props = gameState->getTowerProps(type);
   float _damage(damage < 0 ? props["damage"] : damage);
   float _range(range < 0 ? props["range"] : range);
   float _cooldown(baseCooldown < 0 ? props["cooldown"] : baseCooldown);
@@ -60,9 +60,6 @@ void TowerController::process(const sf::Event& event,
 	}
 }
 
-void TowerController::update() {
-}
-
 void TowerController::render() {
 	sf::CircleShape range;
 	sf::Vector2f pos;
@@ -72,7 +69,7 @@ void TowerController::render() {
 	for (auto tower : *towerVec) {
 		window->draw(tower->getTowerSprite());
 		if (gameState->getBoardTower() == tower) {
-			pos = tower->getOriginalTowerPosition();
+      pos = tower->getPosition();
 			range.setRadius(tower->getRange());
       switch (tower.get()->getTowerType()) {
       case TowerType::physic:

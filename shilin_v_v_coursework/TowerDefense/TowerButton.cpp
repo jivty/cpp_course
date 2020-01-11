@@ -44,9 +44,6 @@ TowerButton::TowerButton(sf::Vector2f _position, int _radius,
 	update();
 }
 
-TowerButton::~TowerButton() {
-}
-
 TowerType TowerButton::getTowerType() {
 	return this->towerType;
 }

@@ -2,8 +2,8 @@
 #include "Timer.h"
 #include "Tower.h"
 
-GameState::GameState(std::shared_ptr<Timer> timer) :
-  timer(timer) {
+GameState::GameState(std::shared_ptr<Timer> timer)
+  : timer(timer) {
   towerProps[TowerType::physic] = { {"gold", 30}, {"damage", 15}, {"range", 140}, {"cooldown", 1.25 * 30} };
   towerProps[TowerType::magic] = { {"gold", 30}, {"damage", 15}, {"range", 140}, {"cooldown", 1.25 * 30} };
   towerProps[TowerType::ultimate] = { {"gold", 50}, {"damage", 20}, {"range", 120}, {"cooldown", 1.5 * 30} };
@@ -40,21 +40,8 @@ int GameState::getCurrentWave() {
 	return this->currentWave;
 }
 
-int GameState::getEnemyRemaining() {
-	return this->enemyRemaining;
-}
-
-int GameState::getEnemyEliminated() {
-	return this->enemyEliminated;
-}
-
 bool GameState::getHelperState() {
 	return this->helperState;
-}
-
-void GameState::startWave() {
-	this->currentWave++;
-	dirtyBit = true;
 }
 
 void GameState::updateHealthBy(int update) {
@@ -91,11 +78,11 @@ void GameState::setCurrentWave(int wave) {
 	dirtyBit = true;
 }
 
-std::map<string, int> GameState::getTowerProps(TowerType type) {
+std::map<std::string, int> GameState::getTowerProps(TowerType type) {
 	return this->towerProps[type];
 }
 
-std::map<string, int> GameState::getEnemyProps(EnemyType type) {
+std::map<std::string, int> GameState::getEnemyProps(EnemyType type) {
 	return this->enemyProps[type];
 }
 
@@ -126,15 +113,10 @@ void GameState::startGame(const int dif) {
     break;
   }
   currentWave = 1;
-  enemyRemaining = -1;
-  enemyEliminated = 0;
 }
 
 const int GameState::getDifficulty() const {
   return difficulty;
-}
-
-void GameState::endGame() {
 }
 
 void GameState::toggleHelpScreen() {
@@ -153,8 +135,6 @@ bool GameState::saveData(const std::string path) {
     && fout.write((char*)& health, sizeof(health))
     && fout.write((char*)& gold, sizeof(gold))
     && fout.write((char*)& currentWave, sizeof(currentWave))
-    && fout.write((char*)& enemyRemaining, sizeof(enemyRemaining))
-    && fout.write((char*)& enemyEliminated, sizeof(enemyEliminated))
     && fout.write((char*)& difficulty, sizeof(difficulty))) {
     success = true;
   }
@@ -170,8 +150,6 @@ bool GameState::loadData(const std::string path) {
     && fin.read((char*)& health, sizeof(health))
     && fin.read((char*)& gold, sizeof(gold))
     && fin.read((char*)& currentWave, sizeof(currentWave))
-    && fin.read((char*)& enemyRemaining, sizeof(enemyRemaining))
-    && fin.read((char*)& enemyEliminated, sizeof(enemyEliminated))
     && fin.read((char*)& difficulty, sizeof(difficulty))) {
     success = true;
   }
@@ -187,7 +165,5 @@ void GameState::setDefault() {
   health = 20;
   gold = 1000;
   currentWave = 1;
-  enemyRemaining = -1;
-  enemyEliminated = 0;
   difficulty = 1;
 }
