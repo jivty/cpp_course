@@ -107,7 +107,7 @@ private:
   int gold{ 1000 };
   int currentWave{ 1 };
   int difficulty{ 1 };
-  TowerType purchaseTower = TowerType::empty;
+  TowerType purchaseTower{ TowerType::empty };
   std::shared_ptr<Tower> boardTower{ nullptr };
 };
 

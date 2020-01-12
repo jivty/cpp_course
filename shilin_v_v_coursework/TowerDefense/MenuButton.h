@@ -141,8 +141,8 @@ public:
 
 private:
 	std::shared_ptr<GameState> gameState;
-	bool selected;
-	bool canUpgrade = true;
+  bool selected{ false };
+  bool canUpgrade{ true };
 	void onClick() override;
 	void onMouseEnter() override;
 	void onMouseLeave() override;

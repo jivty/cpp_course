@@ -113,6 +113,7 @@ void GameState::startGame(const int dif) {
     break;
   }
   currentWave = 1;
+  helperState = 1;
 }
 
 const int GameState::getDifficulty() const {

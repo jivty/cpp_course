@@ -13,7 +13,3 @@ add_custom_target(doc ALL
                   COMMAND ${CMAKE_COMMAND} -E echo "Done."
                   WORKING_DIRECTORY ${DOXYGEN_INPUT_DIR}
                   SOURCES doxyfile)
-
-install(DIRECTORY ${DOXYGEN_INPUT_DIR}/html
-        DESTINATION ${CMAKE_BINARY_DIR}/doc
-        COMPONENT doc)

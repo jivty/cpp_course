@@ -41,7 +41,7 @@ public:
 private:
 	std::chrono::time_point<std::chrono::system_clock> m_StartTime;
 	std::chrono::time_point<std::chrono::system_clock> m_EndTime;
-	bool m_bRunning;
+  bool m_bRunning{ false };
 	std::vector<std::chrono::time_point<std::chrono::system_clock>> starts;
 	std::vector<std::chrono::time_point<std::chrono::system_clock>> ends;
 	double lastTick;

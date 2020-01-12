@@ -51,7 +51,7 @@ private:
 	void onMousePressed() override;
 	void onMouseLeave() override;
 	sf::CircleShape graphic;
-	bool displayText;
+  bool displayText{ false };
 	sf::Text towerButtonText;
 	sf::Text towerButtonText2;
 	sf::RectangleShape towerTextBack;

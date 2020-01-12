@@ -122,6 +122,7 @@ private:
   std::shared_ptr<sf::Texture> _backTexture{ std::make_shared<sf::Texture>() };
   std::shared_ptr<sf::Texture> _groundTexture{ std::make_shared<sf::Texture>() }; 
   std::unique_ptr<sf::Texture> deathscreentexture{ std::make_unique<sf::Texture>() };
+  std::shared_ptr<sf::Texture> _helpTexture{ std::make_unique<sf::Texture>() };
   sf::Font font;
   sf::RectangleShape menuBackground;
   sf::RectangleShape buttonNewGame;

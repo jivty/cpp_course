@@ -59,16 +59,12 @@ GameBoard::GameBoard(std::shared_ptr<GameState> _gameState,
     textConfirmation.setFont(font);
   }
 
-  /*
-    sf::Texture* _helpTexture = new sf::Texture;
-    if (!_helpTexture->loadFromFile("assets/help_screen.png")) {
-      std::cerr << "Error loading the help screen" << std::endl;
-    }
-
-    helpScreen = sf::RectangleShape(sf::Vector2f(1280, 720));
-    helpScreen.setPosition(0, 0);
-    helpScreen.setTexture(_helpTexture);*/
-
+  if (!_helpTexture->loadFromFile("images/helpScreen.png")) {
+    std::cerr << "Error loading the help screen" << std::endl;
+  }
+  helpScreen = sf::RectangleShape(sf::Vector2f(1280, 720));
+  helpScreen.setPosition(0, 0);
+  helpScreen.setTexture(_helpTexture.get());
 
   if (!deathscreentexture->loadFromFile("images/game_over.png")) {
     std::cerr << "Error loading the death screen" << std::endl;
@@ -299,15 +295,6 @@ void GameBoard::process(sf::Event event, sf::Vector2i mousePos) {
 					gridY * Clickable::gridSize);
 			towerController->spawnTower(spawnPos, type);
 			gameState->updateGoldBy(-(gameState->getTowerProps(type)["gold"]));
-		}
-		if (false) {
-			for (int i = 0; i < 18; i++) {
-				for (int j = 0; j < 32; j++) {
-					std::cout << gridStatus[j][i] << " ";
-				}
-				std::cout << std::endl;
-			}
-			std::cout << std::endl;
 		}
 	}
 }
@@ -829,31 +816,31 @@ int main() {
 		sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
 		gameState->mousePos = mousePos;
 
-		if (gameState->getHelperState()) {
-			window->clear();
-			window->draw(gameBoard->helpScreen);
-			window->display();
-			while (gameState->getHelperState()) {
-				while (window->pollEvent(event)) {
-					if (event.type == sf::Event::EventType::Closed) {
-            if (gameBoard->isRunning && !gameBoard->isEndGame) {
-              gameBoard->isMenuAsking = true;
-              gameBoard->menuSaving();
-            } else {
-              gameBoard->saveMusicSettings();
-              window->close();
+    while (gameState->getHelperState() && window->isOpen()) {
+      window->clear();
+      gameBoard->renderLabels();
+      window->draw(gameBoard->helpScreen);
+      window->display();
+      while (window->pollEvent(event)) {
+        if (event.type == sf::Event::EventType::Closed) {
+          if (gameBoard->isRunning && !gameBoard->isEndGame) {
+            gameBoard->isMenuAsking = true;
+            gameBoard->menuSaving();
+            if (gameBoard->isSaveAndQuit) {
+              gameState->toggleHelpScreen();
             }
-						return 0;
-					} else if ((event.type == sf::Event::MouseButtonReleased)
-            && (event.mouseButton.button == sf::Mouse::Left)
-            || (event.type == sf::Event::KeyPressed
-              && event.key.code == sf::Keyboard::Escape)) {
-						gameState->toggleHelpScreen();
-					}
-				}
-			}
-		}
-
+          } else {
+            gameBoard->saveMusicSettings();
+            window->close();
+          }
+        } else if ((event.type == sf::Event::MouseButtonReleased)
+          && (event.mouseButton.button == sf::Mouse::Left)
+          || (event.type == sf::Event::KeyPressed
+            && event.key.code == sf::Keyboard::Escape)) {
+          gameState->toggleHelpScreen();
+        }
+      }
+    }
 		while (window->pollEvent(event)) {
 			if (event.type == sf::Event::EventType::Closed) {
         if (gameBoard->isRunning && !gameBoard->isEndGame) {
