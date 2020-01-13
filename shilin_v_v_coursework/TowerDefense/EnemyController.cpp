@@ -51,13 +51,15 @@ std::shared_ptr<Enemy> EnemyController::spawnEnemy(sf::Vector2f position,
   if (modifierSpeed > 3) {
     if (gameState->getDifficulty() == 1) {
       modifierSpeed = 3;
-    } else if (modifierSpeed > 6 && gameState->getDifficulty() == 2) {
+    } else if (modifierSpeed > 5 && gameState->getDifficulty() == 2) {
       modifierSpeed = 5;
     } else {
       modifierSpeed = 8;
     }
   }
   std::shared_ptr<sf::Texture> texture(nullptr);
+  int modiferHealth(gameState->getCurrentWave() % 4 == 0 ? 
+    gameState->getCurrentWave() / 4 : gameState->getCurrentWave() / 4 + 1);
   int _health = -1;
 	switch (type) {
   case EnemyType::skeleton:
@@ -65,7 +67,8 @@ std::shared_ptr<Enemy> EnemyController::spawnEnemy(sf::Vector2f position,
     _health = (health < 0 ? props["health"] * modifier : health);
     texture = std::make_shared<sf::Texture>(enemySpriteS);
     enemy = std::make_shared<Enemy>(position, enemyBaseSize, texture,
-      props["gold"] * modifier * (int)(std::ceil(3.0f / (float)gameState->getDifficulty())), _health, props["damage"] * modifier,
+      props["gold"] * modifier * (int)(std::ceil(3.0f / (float)gameState->getDifficulty())),
+      _health * modiferHealth, props["damage"],
       props["speed"] * modifierSpeed, EnemyType::skeleton, targetPath);
     break;
   case EnemyType::demon:
@@ -73,23 +76,26 @@ std::shared_ptr<Enemy> EnemyController::spawnEnemy(sf::Vector2f position,
     _health = (health < 0 ? props["health"] * modifier : health);
     texture = std::make_shared<sf::Texture>(enemySpriteD);
     enemy = std::make_shared<Enemy>(position, enemyBaseSize, texture,
-      props["gold"] * modifier * (int)(std::ceil(3.0f / (float)gameState->getDifficulty())), _health, props["damage"] * modifier,
+      props["gold"] * modifier * (int)(std::ceil(3.0f / (float)gameState->getDifficulty())),
+      _health * modiferHealth, props["damage"],
       props["speed"] * modifierSpeed, EnemyType::demon, targetPath);
     break;
 	case EnemyType::lancer:
 		props = gameState->getEnemyProps(type);
     _health = (health < 0 ? props["health"] * modifier : health);
     texture = std::make_shared<sf::Texture>(enemySpriteL);
-		enemy = std::make_shared<Enemy>(position, enemyBaseSize, texture,
-				props["gold"] * modifier * (int)(std::ceil(3.0f / (float)gameState->getDifficulty())), _health, props["damage"] * modifier,
-				props["speed"] * modifierSpeed, EnemyType::lancer, targetPath);
-		break;
+    enemy = std::make_shared<Enemy>(position, enemyBaseSize, texture,
+      props["gold"] * modifier * (int)(std::ceil(3.0f / (float)gameState->getDifficulty())),
+      _health * modiferHealth, props["damage"],
+      props["speed"] * modifierSpeed, EnemyType::lancer, targetPath);
+    break;
   case EnemyType::rhino:
     props = gameState->getEnemyProps(type);
     _health = (health < 0 ? props["health"] * modifier : health);
     texture = std::make_shared<sf::Texture>(enemySpriteR);
     enemy = std::make_shared<Enemy>(position, enemyBaseSize, texture,
-      props["gold"] * modifier * (int)(std::ceil(3.0f / (float)gameState->getDifficulty())), _health, props["damage"] * modifier,
+      props["gold"] * modifier * (int)(std::ceil(3.0f / (float)gameState->getDifficulty())),
+      _health * modiferHealth, props["damage"],
       props["speed"] * modifierSpeed, EnemyType::rhino, targetPath);
     break;
 	}

@@ -4,9 +4,9 @@
 
 GameState::GameState(std::shared_ptr<Timer> timer)
   : timer(timer) {
-  towerProps[TowerType::physic] = { {"gold", 30}, {"damage", 15}, {"range", 140}, {"cooldown", 1.25 * 30} };
-  towerProps[TowerType::magic] = { {"gold", 30}, {"damage", 15}, {"range", 140}, {"cooldown", 1.25 * 30} };
-  towerProps[TowerType::ultimate] = { {"gold", 50}, {"damage", 20}, {"range", 120}, {"cooldown", 1.5 * 30} };
+  towerProps[TowerType::physic] = { {"gold", 30}, {"damage", 15}, {"range", 140}, {"cooldown", 1.25f * 30} };
+  towerProps[TowerType::magic] = { {"gold", 30}, {"damage", 15}, {"range", 140}, {"cooldown", 1.25f * 30} };
+  towerProps[TowerType::ultimate] = { {"gold", 50}, {"damage", 20}, {"range", 120}, {"cooldown", 1.5f * 30} };
 
   enemyProps[EnemyType::skeleton] = { {"gold", 2}, {"health", 60}, {"damage", 2}, {"speed", 2} };
   enemyProps[EnemyType::demon] = { {"gold", 4}, {"health", 100}, {"damage", 4}, {"speed", 1} };
