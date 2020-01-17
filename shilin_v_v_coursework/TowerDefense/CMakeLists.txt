@@ -8,6 +8,17 @@ option(BUILD_WITH_DOCS "Build with documentation." OFF)
 
 SET(CMAKE_INSTALL_PREFIX $<TARGET_FILE_DIR:${PROJECT_NAME}> CACHE PATH "Initial cahe" FORCE)
 
+if (CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Debug or Release" FORCE)
+else()
+  if (NOT CMAKE_BUILT_TYPE)
+    message("Defaulting to release build.")
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Default: Release" FORCE)
+  endif()
+  set_property(CAHCE CMAKE_BUILD_TYPE PROPERTY HELPSTRING "Choose the type of buiild")
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug;Release")
+endif()
+
 set(prj_headers
     Bullet.h
     Clickable.h
@@ -47,6 +58,7 @@ endif()
 add_executable(${PROJECT_NAME} 
 ${prj_sources} 
 ${prj_headers})
+
 find_package(SFML COMPONENTS audio graphics window system REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC sfml-graphics sfml-audio sfml-window sfml-system)
 
